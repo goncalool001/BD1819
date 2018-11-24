@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Date;
 import java.util.Scanner;
 import java.sql.*;
 
@@ -163,7 +164,7 @@ public class main {
                         case 2:
                             break;
                         case 3:
-                            //elimina_artista();
+                            elimina_artista();
                             break;
                         case 0:
                             break;
@@ -178,7 +179,7 @@ public class main {
                     o = sc.nextInt();
                     switch (o) {
                         case 1:
-                            //inserir_album();
+                            inserir_album();
                             break;
                         case 2:
                             System.out.println("Pretende alterar a [1]descrição de um album ou [2]data de criação?\n");
@@ -266,7 +267,23 @@ public class main {
             e.printStackTrace();
         }
         return false;
-    }
+    }/*
+    private static boolean verificaArtista(String artista_nome){//verifica se user existe
+        String user = null;
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM artista where nome=?;");
+            stmt.setString(1,artista_nome);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            user = rs.getString("nome");
+            if(user.equals(artista_nome)){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }*/
     private static boolean verificaUserEmpty(){
         try{
             Statement statement = c.createStatement();
@@ -304,6 +321,32 @@ public class main {
             System.out.println("Utilizador não encontrado");
         }
     }
+    private static void elimina_artista(){
+        String nome,tipo;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Qual o nome do artista que quer eliminar?");
+        nome = sc.nextLine();
+        System.out.println("Qual o tipo do artista que quer eliminar?");
+        tipo = sc.nextLine();
+        if(verificaArtista(nome,tipo)){
+            try{
+                c.setAutoCommit(false);
+                PreparedStatement stmt =  c.prepareStatement("DELETE FROM artista WHERE nome=?");
+                stmt.setString(1,nome);
+                stmt.executeUpdate();
+
+                stmt.close();
+                c.commit();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            System.out.println("Artista Eliminado!");
+        }else{
+            System.out.println("Artista não encontrado...");
+        }
+
+
+    }
     private static void inserir_artista(){
         String a,nome, tipo, informacao;
         String [] b;
@@ -332,8 +375,65 @@ public class main {
             System.out.println("Artista já existente!");
         }
     }
+    @Deprecated
+    private static void inserir_album(){
+        String a,nome, genero, descricao;
+        java.sql.Date data;
+        String [] b,d;
+        int dia, mes, ano;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nome Data_lancamento(dd/mm/aaaa) Genero Descricao");
+        a = sc.nextLine();
+        b = a.split(" ");
+        d = b[1].split("/");
+        nome = b[0];
+        genero = b[2];
+        descricao = b[3];
+        dia = Integer.parseInt(d[0]);
+        mes = Integer.parseInt(d[1]);
+        ano = Integer.parseInt(d[2])-1900;
+        data = new java.sql.Date(ano,mes,dia);
+        if(!verificaAlbum(nome,data)){
+            try{
+                c.setAutoCommit(false);
+                PreparedStatement stmt = c.prepareStatement("INSERT INTO album(nome, data_lancamento, genero, descricao)"+"VALUES (?,?,?,?)");
+                stmt.setString(1,nome);
+                stmt.setDate(2, data);
+                stmt.setString(3, genero);
+                stmt.setString(4, descricao);
+
+                stmt.executeUpdate();
+                c.commit();
+                System.out.println("Artista adicionado");
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }else {
+            System.out.println("Album já existente!");
+        }
+
+    }
+    private static boolean verificaAlbum(String nome, java.sql.Date data){
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM album where nome=? AND data_lancamento=?;");
+            stmt.setString(1,nome);
+            stmt.setDate(2, data);
+            ResultSet rs = stmt.executeQuery();
+            if(!rs.next()){
+                stmt.close();
+                return false;
+            }
+            else{
+                stmt.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
     private static boolean verificaArtista(String nome, String tipo){
-        String user,tipo_art;
         try{
             PreparedStatement stmt = c.prepareStatement("SELECT * FROM artista where nome=? AND tipo_artista=?;");
             stmt.setString(1,nome);
