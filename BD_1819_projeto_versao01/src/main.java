@@ -182,18 +182,7 @@ public class main {
                             inserir_album();
                             break;
                         case 2:
-                            System.out.println("Pretende alterar a [1]descrição de um album ou [2]data de criação?\n");
-                            op = sc.nextInt();
-                            switch (op) {
-                                case 1:
-                                    //editar_descricao_album(cliente_corrente.getUsername());
-                                    break;
-                                case 2:
-                                //editar_data_album(cliente_corrente.getUsername());
-                                    break;
-                                default:
-                                    System.out.println("Insira uma opção válida!");
-                            }
+                            editar_album();
                             break;
                         case 3:
                             //elimina_album();
@@ -267,23 +256,7 @@ public class main {
             e.printStackTrace();
         }
         return false;
-    }/*
-    private static boolean verificaArtista(String artista_nome){//verifica se user existe
-        String user = null;
-        try{
-            PreparedStatement stmt = c.prepareStatement("SELECT * FROM artista where nome=?;");
-            stmt.setString(1,artista_nome);
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            user = rs.getString("nome");
-            if(user.equals(artista_nome)){
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }*/
+    }
     private static boolean verificaUserEmpty(){
         try{
             Statement statement = c.createStatement();
@@ -319,6 +292,63 @@ public class main {
             System.out.println("Privilégios atualizados");
         }else{
             System.out.println("Utilizador não encontrado");
+        }
+    }
+    private static void editar_album(){
+        String nome,a,descricao,genero;
+        String [] b;
+        java.sql.Date data;
+        int dia, mes, ano,opc;
+        Scanner sc = new Scanner(System.in);
+        Scanner sc1 = new Scanner(System.in);
+        System.out.println("Qual o nome do album que pretende editar? ");
+        nome = sc.nextLine();
+        System.out.println("Data de lançamento do album(dd/mm/aaaa)");
+        a = sc.nextLine();
+        b = a.split("/");
+        dia =  Integer.parseInt(b[0]);
+        mes =  Integer.parseInt(b[1])-1;
+        ano =  Integer.parseInt(b[2])-1900;
+        data = new java.sql.Date(ano, mes, dia);
+        System.out.println("Pretende editar [1]Descricao ou [2]genero?");
+        opc = sc.nextInt();
+        if(verificaAlbum(nome, data)){
+            try {
+                c.setAutoCommit(false);
+                switch (opc){
+                    case 1:
+                        System.out.println("Qual a nova descricao?");
+                        descricao = sc1.nextLine();
+                        PreparedStatement stmt = c.prepareStatement("UPDATE album SET descricao = ? WHERE nome=? AND data_lancamento=?");
+                        stmt.setString(1,descricao);
+                        stmt.setString(2,nome);
+                        stmt.setDate(3,data);
+                        stmt.executeUpdate();
+
+                        stmt.close();
+                        c.commit();
+                        break;
+                    case 2:
+                        System.out.println("Qual o novo género do álbum?");
+                        genero = sc1.nextLine();
+                        PreparedStatement stmt1 = c.prepareStatement("UPDATE album SET genero = ? WHERE nome=? AND data_lancamento=?");
+                        System.out.println("HEHEHEHEHEHHEHEH");
+                        stmt1.setString(1,genero);
+                        stmt1.setString(2,nome);
+                        stmt1.setDate(3,data);
+                        stmt1.executeUpdate();
+
+                        stmt1.close();
+                        c.commit();
+                        break;
+                    default:
+                        System.out.println("Escolha uma opcao válida");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }else{
+            System.out.println("Album não encontrado");
         }
     }
     private static void elimina_artista(){
@@ -390,7 +420,7 @@ public class main {
         genero = b[2];
         descricao = b[3];
         dia = Integer.parseInt(d[0]);
-        mes = Integer.parseInt(d[1]);
+        mes = Integer.parseInt(d[1])-1;
         ano = Integer.parseInt(d[2])-1900;
         data = new java.sql.Date(ano,mes,dia);
         if(!verificaAlbum(nome,data)){
