@@ -361,21 +361,13 @@ public class main {
         }
     }
     private static void editar_album(){
-        String nome,a,descricao,genero;
-        String [] b;
-        java.sql.Date data;
-        int dia, mes, ano,opc;
+        String nome,descricao,genero;
+        int opc;
         Scanner sc = new Scanner(System.in);
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Qual o nome do album que pretende editar? ");
         nome = sc.nextLine();
-        System.out.println("Data de lançamento do album(dd/mm/aaaa)");
-        a = sc.nextLine();
-        b = a.split("/");
-        dia =  Integer.parseInt(b[0]);
-        mes =  Integer.parseInt(b[1])-1;
-        ano =  Integer.parseInt(b[2])-1900;
-        data = new java.sql.Date(ano, mes, dia);
+
         System.out.println("Pretende editar [1]Descricao ou [2]genero [0]Voltar?\n");
         opc = sc.nextInt();
         if(opc == 0)
@@ -387,10 +379,9 @@ public class main {
                     case 1:
                         System.out.println("Qual a nova descricao?");
                         descricao = sc1.nextLine();
-                        PreparedStatement stmt = c.prepareStatement("UPDATE album SET descricao = ? WHERE nome=? AND data_lancamento=?");
+                        PreparedStatement stmt = c.prepareStatement("UPDATE album SET descricao = ? WHERE nome=? ");
                         stmt.setString(1,descricao);
                         stmt.setString(2,nome);
-                        stmt.setDate(3,data);
                         stmt.executeUpdate();
 
                         stmt.close();
@@ -399,11 +390,10 @@ public class main {
                     case 2:
                         System.out.println("Qual o novo género do álbum?");
                         genero = sc1.nextLine();
-                        PreparedStatement stmt1 = c.prepareStatement("UPDATE album SET genero = ? WHERE nome=? AND data_lancamento=?");
-                        System.out.println("HEHEHEHEHEHHEHEH");
+                        PreparedStatement stmt1 = c.prepareStatement("UPDATE album SET genero = ? WHERE nome=?");
+
                         stmt1.setString(1,genero);
                         stmt1.setString(2,nome);
-                        stmt1.setDate(3,data);
                         stmt1.executeUpdate();
 
                         stmt1.close();
