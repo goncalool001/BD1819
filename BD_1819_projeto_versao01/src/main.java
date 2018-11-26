@@ -19,12 +19,13 @@ public class main {
             e.printStackTrace();
         }
         try {
-            //c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bd1819","postgres", "default");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/base_dados_1819","postgres", "default");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bd1819","postgres", "default");
+            //c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/base_dados_1819","postgres", "default");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        menu_inicial();base_dados_1819@localhost
+        menu_inicial();
+
 
     }
 
@@ -379,7 +380,7 @@ public class main {
         opc = sc.nextInt();
         if(opc == 0)
             return;
-        if(verificaAlbum(nome, data)){
+        if(verificaAlbum(nome)){
             try {
                 c.setAutoCommit(false);
                 switch (opc){
@@ -497,11 +498,11 @@ public class main {
         Scanner sc = new Scanner(System.in);
         System.out.println("Qual o nome do album que pretende eliminar?");
         nome = sc.nextLine();
-        if(verificaAlbum(nome,)){
+        if(verificaAlbum(nome)){
             try{
                 c.setAutoCommit(false);
-                PreparedStatement stmt = c.prepareStatement("DELETE FROM album where id_album=?");
-                stmt.setInt(1,id);
+                PreparedStatement stmt = c.prepareStatement("DELETE FROM album where nome=?");
+                stmt.setString(1,nome  );
                 stmt.executeUpdate();
 
                 stmt.close();
@@ -695,7 +696,7 @@ public class main {
         mes = Integer.parseInt(d[1])-1;
         ano = Integer.parseInt(d[2])-1900;
         data = new java.sql.Date(ano,mes,dia);
-        if(!verificaAlbum(nome,data)){
+        if(!verificaAlbum(nome)){
             try{
                 c.setAutoCommit(false);
                 PreparedStatement stmt = c.prepareStatement("INSERT INTO album(nome, data_lancamento, genero, descricao)"+"VALUES (?,?,?,?)");
@@ -729,7 +730,6 @@ public class main {
         try{
             PreparedStatement stmt = c.prepareStatement("SELECT * FROM album where nome=? ;");
             stmt.setString(1,nome);
-            stmt.setDate(2, data);
             return verifica(stmt);
         } catch (SQLException e) {
             e.printStackTrace();
