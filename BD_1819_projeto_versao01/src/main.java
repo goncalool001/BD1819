@@ -186,7 +186,7 @@ public class main {
                             editar_album();
                             break;
                         case 3:
-                            //elimina_album();
+                            elimina_album();
                             break;
                         case 0:
                             break;
@@ -492,6 +492,28 @@ public class main {
 
 
     }
+    private static void elimina_album(){
+        String nome;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Qual o nome do album que pretende eliminar?");
+        nome = sc.nextLine();
+        if(verificaAlbum(nome,)){
+            try{
+                c.setAutoCommit(false);
+                PreparedStatement stmt = c.prepareStatement("DELETE FROM album where id_album=?");
+                stmt.setInt(1,id);
+                stmt.executeUpdate();
+
+                stmt.close();
+                c.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Album eliminado");
+        }else{
+            System.out.println("Artista não encontrado");
+        }
+    }
     private static void inserir_musica(){ //falta inserir a duracao da musica
         String a,nome_musica=null, letra_musica=null, concerto_musica=null, album_musica=null, nome_artista_musica=null, funcao_artista_musica=null, tipo_artista=null;
         int posicao_musica, ciclo_go=0;
@@ -703,9 +725,9 @@ public class main {
         }
         return false;
     }
-    private static boolean verificaAlbum(String nome, java.sql.Date data){
+    private static boolean verificaAlbum(String nome){
         try{
-            PreparedStatement stmt = c.prepareStatement("SELECT * FROM album where nome=? AND data_lancamento=?;");
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM album where nome=? ;");
             stmt.setString(1,nome);
             stmt.setDate(2, data);
             return verifica(stmt);
@@ -745,4 +767,3 @@ public class main {
         return false;
     }
 }
-
