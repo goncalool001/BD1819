@@ -295,7 +295,7 @@ public class main {
         }
     }
     private static void editar_album(){
-        String nome,a,descricao,genero;
+        String nome,descricao,genero;
 
         int opc,id;
         Scanner sc = new Scanner(System.in);
