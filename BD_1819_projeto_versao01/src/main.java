@@ -185,7 +185,7 @@ public class main {
                             editar_album();
                             break;
                         case 3:
-                            //elimina_album();
+                            elimina_album();
                             break;
                         default:
                             System.out.println("Introduza uma opção válida!");
@@ -296,33 +296,27 @@ public class main {
     }
     private static void editar_album(){
         String nome,a,descricao,genero;
-        String [] b;
-        java.sql.Date data;
-        int dia, mes, ano,opc;
+
+        int opc,id;
         Scanner sc = new Scanner(System.in);
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Qual o nome do album que pretende editar? ");
         nome = sc.nextLine();
-        System.out.println("Data de lançamento do album(dd/mm/aaaa)");
-        a = sc.nextLine();
-        b = a.split("/");
-        dia =  Integer.parseInt(b[0]);
-        mes =  Integer.parseInt(b[1])-1;
-        ano =  Integer.parseInt(b[2])-1900;
-        data = new java.sql.Date(ano, mes, dia);
+
         System.out.println("Pretende editar [1]Descricao ou [2]genero?");
         opc = sc.nextInt();
-        if(verificaAlbum(nome, data)){
+        if(verificaAlbum(nome)){
             try {
                 c.setAutoCommit(false);
+                id = getAlbumId(nome);
                 switch (opc){
                     case 1:
                         System.out.println("Qual a nova descricao?");
                         descricao = sc1.nextLine();
-                        PreparedStatement stmt = c.prepareStatement("UPDATE album SET descricao = ? WHERE nome=? AND data_lancamento=?");
+                        PreparedStatement stmt = c.prepareStatement("UPDATE album SET descricao = ? WHERE id_album = ?");
                         stmt.setString(1,descricao);
-                        stmt.setString(2,nome);
-                        stmt.setDate(3,data);
+                        stmt.setInt(2,id);
+
                         stmt.executeUpdate();
 
                         stmt.close();
@@ -331,11 +325,11 @@ public class main {
                     case 2:
                         System.out.println("Qual o novo género do álbum?");
                         genero = sc1.nextLine();
-                        PreparedStatement stmt1 = c.prepareStatement("UPDATE album SET genero = ? WHERE nome=? AND data_lancamento=?");
-                        System.out.println("HEHEHEHEHEHHEHEH");
+                        PreparedStatement stmt1 = c.prepareStatement("UPDATE album SET genero = ? WHERE id_album=?");
+                        //System.out.println("HEHEHEHEHEHHEHEH");
                         stmt1.setString(1,genero);
-                        stmt1.setString(2,nome);
-                        stmt1.setDate(3,data);
+                        stmt1.setInt(2,id);
+
                         stmt1.executeUpdate();
 
                         stmt1.close();
@@ -349,6 +343,30 @@ public class main {
             }
         }else{
             System.out.println("Album não encontrado");
+        }
+    }
+    private static void elimina_album(){
+        int id;
+        String nome;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Qual o nome do album que pretende eliminar?");
+        nome = sc.nextLine();
+        if(verificaAlbum(nome)){
+            id = getAlbumId(nome);
+            try{
+                c.setAutoCommit(false);
+                PreparedStatement stmt = c.prepareStatement("DELETE FROM album where id_album=?");
+                stmt.setInt(1,id);
+                stmt.executeUpdate();
+
+                stmt.close();
+                c.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Album eliminado");
+        }else{
+            System.out.println("Artista não encontrado");
         }
     }
     private static void elimina_artista(){
@@ -423,10 +441,10 @@ public class main {
         mes = Integer.parseInt(d[1])-1;
         ano = Integer.parseInt(d[2])-1900;
         data = new java.sql.Date(ano,mes,dia);
-        if(!verificaAlbum(nome,data)){
+        if(!verificaAlbum(nome)){
             try{
                 c.setAutoCommit(false);
-                PreparedStatement stmt = c.prepareStatement("INSERT INTO album(nome, data_lancamento, genero, descricao)"+"VALUES (?,?,?,?)");
+                PreparedStatement stmt = c.prepareStatement("INSERT INTO album(id_album,nome, data_lancamento, genero, descricao)"+"VALUES (DEFAULT ,?,?,?,?)");
                 stmt.setString(1,nome);
                 stmt.setDate(2, data);
                 stmt.setString(3, genero);
@@ -443,11 +461,11 @@ public class main {
         }
 
     }
-    private static boolean verificaAlbum(String nome, java.sql.Date data){
+    
+    private static boolean verificaAlbum(String nome){
         try{
-            PreparedStatement stmt = c.prepareStatement("SELECT * FROM album where nome=? AND data_lancamento=?;");
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM album where nome=?;");
             stmt.setString(1,nome);
-            stmt.setDate(2, data);
             ResultSet rs = stmt.executeQuery();
             if(!rs.next()){
                 stmt.close();
@@ -483,6 +501,19 @@ public class main {
             e.printStackTrace();
         }
         return false;
+    }
+    private static int getAlbumId(String nome){
+        int id = 0;
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT id_album FROM album where nome=?");
+            stmt.setString(1,nome);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            id = rs.getInt("id_album");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 }
 
