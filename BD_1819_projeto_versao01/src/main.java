@@ -1,3 +1,5 @@
+import org.postgresql.util.PSQLException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -125,8 +127,6 @@ public class main {
 
     }
     private static void menu_login_editor(){
-        InputStreamReader input = new InputStreamReader(System.in);
-        BufferedReader reader_linha = new BufferedReader(input);
         Scanner reader = new Scanner(System.in);
         /*if( System.getProperty( "os.name" ).startsWith( "Window" ) )
             Runtime.getRuntime().exec("cls");
@@ -222,22 +222,10 @@ public class main {
                     darPrivilegio();
                     break;
                 case 6: //detalhes do album numero 14
-                    System.out.println("Insira o nome do album: ");
-                    try {
-                        String nome = reader_linha.readLine();
-                        pesquisar(14, nome);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    pesquisar(14);
                     break;
                 case 7: //detalhe artista numero 15
-                    System.out.println("Insira o nome do artista: ");
-                    try {
-                        String nome = reader_linha.readLine();
-                        pesquisar(15, nome);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    pesquisar(15);
                     break;
                 case 8: //upload de musica
                     /*server_i.enviaStringAoMulticast("16");
@@ -251,20 +239,17 @@ public class main {
                 case 10: //partilhar musica
                     break;
                 case 11://pesquisar musica numero 13
-                    System.out.println("Insira o nome da musica: ");
-                    try {
-                        String nome = reader_linha.readLine();
-                        pesquisar(13, nome);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    pesquisar(14);
                     break;
                 case 12://teste para album
                     listar(14);
+                    break;
                 case 13://teste para artista
                     listar(15);
+                    break;
                 case 14://teste para utilizador 16
                     listar(16);
+                    break;
                 case 0:
                     System.out.println("Logout");
                     break;
@@ -274,45 +259,62 @@ public class main {
         }while (opcao != 0);
 
     }
-    private static void pesquisar(int tipo_info, String nome){
+    private static void pesquisar(int tipo_info){
+        InputStreamReader input = new InputStreamReader(System.in);
+        BufferedReader reader_linha = new BufferedReader(input);
+        String nome;
         PreparedStatement stmt;
-        switch (tipo_info){
-            case 14://album
-                try{
-                    stmt = c.prepareStatement("SELECT * as linha FROM album where nome=?;");
-                    stmt.setString(1,nome);
-                    ResultSet rs = stmt.executeQuery();
-                    rs.next();
-                    System.out.println(rs.getString("linha"));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case 15://artista
-                try{
-                    stmt = c.prepareStatement("SELECT * as linha FROM artista where nome=?;");
-                    stmt.setString(1,nome);
-                    ResultSet rs = stmt.executeQuery();
-                    rs.next();
-                    System.out.println(rs.getString("linha"));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case 13://musica
-                try{
-                    stmt = c.prepareStatement("SELECT * as linha FROM musica where nome=?;");
-                    stmt.setString(1,nome);
-                    ResultSet rs = stmt.executeQuery();
-                    rs.next();
-                    System.out.println(rs.getString("linha"));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                break;
+        Scanner sc = new Scanner(System.in);
+        int opcao=1;
+        while (opcao==1) {
+            System.out.println("Insira o nome: ");
+            try {
+                nome = reader_linha.readLine();
+                switch (tipo_info) {
+                    case 14://album
+                        try {
+                            stmt = c.prepareStatement("SELECT * FROM album where nome=?;");
+                            stmt.setString(1, nome);
+                            ResultSet rs = stmt.executeQuery();
+                            rs.next();
+                            System.out.println(rs.getString(1) + " : " + rs.getString(2) +
+                                    " : " + rs.getString(3) + " : " + rs.getString(4));
+                        } catch (SQLException e) {
+                            System.out.println("Album inexistente. Tentar outra vez? (1 - Sim | 0 - Nao)");
+                        }
+                        break;
+                    case 15://artista
+                        try {
+                            stmt = c.prepareStatement("SELECT * FROM artista where nome=?;");
+                            stmt.setString(1, nome);
+                            ResultSet rs = stmt.executeQuery();
+                            rs.next();
+                            System.out.println(rs.getString(0) + " : " + rs.getString(1)
+                                    + " : " + rs.getString(2));
+                        } catch (SQLException e) {
+                            System.out.println("Artista inexistente. Tentar outra vez? (1 - Sim | 0 - Nao)");
+                        }
+                        break;
+                    case 13://musica
+                        try {
+                            stmt = c.prepareStatement("SELECT * FROM musica where nome=?;");
+                            stmt.setString(1, nome);
+                            ResultSet rs = stmt.executeQuery();
+                            rs.next();
+                            System.out.println(rs.getString(1) + " : " + rs.getString(2) + " : "
+                                    + rs.getString(3));
+                        } catch (SQLException e) {
+                            System.out.println("Musica inexistente. Tentar outra vez? (1 - Sim | 0 - Nao)");
+                        }
+                        break;
 
-            default:
-                break;
+                    default:
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            opcao = sc.nextInt();
         }
     }
     private static void listar(int tipo_info){
@@ -323,8 +325,8 @@ public class main {
                     stmt = c.prepareStatement("SELECT * FROM album;");
                     ResultSet rs = stmt.executeQuery();
                     while(rs.next()){
-                        System.out.println("\nAlbum: " + rs.getString(0) + " : " + rs.getString(1)
-                        + " : " + rs.getString(2) + " : " + rs.getString(3));
+                        System.out.println("\nAlbum: "  + rs.getString(1)
+                        + " : " + rs.getString(2) + " : " + rs.getString(3) + " : " + rs.getString(4));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -335,8 +337,8 @@ public class main {
                     stmt = c.prepareStatement("SELECT * FROM artista;");
                     ResultSet rs = stmt.executeQuery();
                     while(rs.next()){
-                        System.out.println("\nArtista: " + rs.getString(0) + " : " + rs.getString(1)
-                        + " : " + rs.getString(2));
+                        System.out.println("\nArtista: " + rs.getString(1)
+                        + " : " + rs.getString(2) + " : " + rs.getString(3));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -636,6 +638,7 @@ public class main {
 
         while(ciclo_go == 0) {
             System.out.println("Nome -Letra- Concerto Album Artista Funcao_do_artista");
+            //teste teste teste teste teste teste
             a = sc.nextLine();
             b = a.split(" ");
             nome_musica = b[0];
@@ -656,12 +659,18 @@ public class main {
                 ciclo_go=0;
             }else
                 ciclo_go=1;
-            System.out.println("Continuar? (0-Sim | 1-Nao)");
-            ciclo_go = sc.nextInt();
+            if(ciclo_go==0) {
+                System.out.println("Continuar? (0-Sim | 1-Nao)");
+                ciclo_go = sc.nextInt();
+            }
         }
+        if(ciclo_go == 1)
+            return;
         posicao_musica = verifia_tamanho_album(album_musica);
+        System.out.println("\nverifica posicao: " + posicao_musica);
         if(!verifica_musica(nome_musica)){
             try{
+                System.out.println("\ndentro de sql");
                 c.setAutoCommit(false);
                 //inserir na tabela musica
                 PreparedStatement stmt = c.prepareStatement("INSERT INTO musica(id_musica, nome_musica, letra_musica, concerto_musica, posicao_musica) "+"VALUES (?,?,?,?,?)");
@@ -694,10 +703,11 @@ public class main {
         String tipo_artista = null;
         PreparedStatement stmt = null;
         try {
-            ResultSet rs = stmt.executeQuery("SELECT artista.tipo_artista as linha FROM artista WHERE artista.nome == nome_artista;");
-            while(rs.next()){
-                tipo_artista = rs.getString("linha");
-            }
+            stmt = c.prepareStatement("SELECT artista.tipo_artista FROM artista where nome=?;");
+            stmt.setString(1, nome_artista);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            tipo_artista = rs.getString(1);
             return tipo_artista;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -710,10 +720,11 @@ public class main {
         Date data_lancamento = null;
         PreparedStatement stmt = null;
         try {
-            ResultSet rs = stmt.executeQuery("SELECT album.data_lancamento as linha FROM album WHERE album.nome == nome_album;");
-            while(rs.next()){
-                data_lancamento = rs.getDate("linha");
-            }
+            stmt = c.prepareStatement("SELECT album.data_lancamento FROM album where nome=?;");
+            stmt.setString(1, nome_album);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            data_lancamento = rs.getDate(1);
             return data_lancamento;
         } catch (SQLException e) {
             e.printStackTrace();
