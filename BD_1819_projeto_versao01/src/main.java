@@ -19,8 +19,8 @@ public class main {
             e.printStackTrace();
         }
         try {
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bd1819","postgres", "default");
-            //c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/base_dados_1819","postgres", "default");
+            //c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bd1819","postgres", "default");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/base_dados_1819","postgres", "default");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,6 +125,8 @@ public class main {
 
     }
     private static void menu_login_editor(){
+        InputStreamReader input = new InputStreamReader(System.in);
+        BufferedReader reader_linha = new BufferedReader(input);
         Scanner reader = new Scanner(System.in);
         /*if( System.getProperty( "os.name" ).startsWith( "Window" ) )
             Runtime.getRuntime().exec("cls");
@@ -149,12 +151,12 @@ public class main {
                     + "[0]Logout");
 
             opcao = reader.nextInt();
-            int o, op;
+            int o;
 
             switch (opcao) {
-                case 1: //listar as musicas
+                case 1: //listar as musicas 13
                     System.out.println("A listar musicas");
-                    //listar_musicas();
+                    listar(13);
                     break;
                 case 2: //gerir artistas
                     System.out.println("Pretende [1]adicionar, [2]editar ou [3]eliminar um artista [0]Voltar");
@@ -220,10 +222,22 @@ public class main {
                     darPrivilegio();
                     break;
                 case 6: //detalhes do album numero 14
-                    //pesquisar(14);
+                    System.out.println("Insira o nome do album: ");
+                    try {
+                        String nome = reader_linha.readLine();
+                        pesquisar(14, nome);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 7: //detalhe artista numero 15
-                    //pesquisar(15); /// a fazer
+                    System.out.println("Insira o nome do artista: ");
+                    try {
+                        String nome = reader_linha.readLine();
+                        pesquisar(15, nome);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 8: //upload de musica
                     /*server_i.enviaStringAoMulticast("16");
@@ -237,8 +251,20 @@ public class main {
                 case 10: //partilhar musica
                     break;
                 case 11://pesquisar musica numero 13
-                    //pesquisar(13);
+                    System.out.println("Insira o nome da musica: ");
+                    try {
+                        String nome = reader_linha.readLine();
+                        pesquisar(13, nome);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
+                case 12://teste para album
+                    listar(14);
+                case 13://teste para artista
+                    listar(15);
+                case 14://teste para utilizador 16
+                    listar(16);
                 case 0:
                     System.out.println("Logout");
                     break;
@@ -247,6 +273,101 @@ public class main {
             }
         }while (opcao != 0);
 
+    }
+    private static void pesquisar(int tipo_info, String nome){
+        PreparedStatement stmt;
+        switch (tipo_info){
+            case 14://album
+                try{
+                    stmt = c.prepareStatement("SELECT * as linha FROM album where nome=?;");
+                    stmt.setString(1,nome);
+                    ResultSet rs = stmt.executeQuery();
+                    rs.next();
+                    System.out.println(rs.getString("linha"));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 15://artista
+                try{
+                    stmt = c.prepareStatement("SELECT * as linha FROM artista where nome=?;");
+                    stmt.setString(1,nome);
+                    ResultSet rs = stmt.executeQuery();
+                    rs.next();
+                    System.out.println(rs.getString("linha"));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 13://musica
+                try{
+                    stmt = c.prepareStatement("SELECT * as linha FROM musica where nome=?;");
+                    stmt.setString(1,nome);
+                    ResultSet rs = stmt.executeQuery();
+                    rs.next();
+                    System.out.println(rs.getString("linha"));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+    private static void listar(int tipo_info){
+        PreparedStatement stmt;
+        switch (tipo_info){
+            case 14://album
+                try{
+                    stmt = c.prepareStatement("SELECT * FROM album;");
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()){
+                        System.out.println("\nAlbum: " + rs.getString(0) + " : " + rs.getString(1)
+                        + " : " + rs.getString(2) + " : " + rs.getString(3));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 15://artista
+                try{
+                    stmt = c.prepareStatement("SELECT * FROM artista;");
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()){
+                        System.out.println("\nArtista: " + rs.getString(0) + " : " + rs.getString(1)
+                        + " : " + rs.getString(2));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 13://musica
+                try{
+                    stmt = c.prepareStatement("SELECT * FROM musica;");
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()){
+                        System.out.println("\nMusica: " + rs.getString(1) + " : " + rs.getString(2)
+                        + " : " + rs.getString(3) + " : " + rs.getString(4));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 16:
+                try{
+                    stmt = c.prepareStatement("SELECT * FROM utilizador;");
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()){
+                        System.out.println("\nUtilizador: " + rs.getString(1) + " : " + rs.getString(2));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+                default:
+                    break;
+        }
     }
     private static boolean verificaUser(String username){//verifica se user existe
         String user = null;
