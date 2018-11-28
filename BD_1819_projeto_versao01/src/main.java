@@ -1,3 +1,4 @@
+import jdk.swing.interop.SwingInterOpUtils;
 import org.apache.commons.io.FileUtils;
 import org.postgresql.util.PSQLException;
 
@@ -100,6 +101,10 @@ public class main {
                     username = frase_chave_valor[0];
                     password = frase_chave_valor[1];
                     cartao_cidadao = Integer.parseInt(frase_chave_valor[2]);
+                    if(String.valueOf(cartao_cidadao).length()!=9) {
+                        System.out.println("O CC deve ter 9 números");
+                        break;
+                    }
                     registar(username, password);
                     break;
             }
@@ -177,6 +182,8 @@ public class main {
                     + "[5]Download de música\n"
                     + "[6]Partilhar uma música\n"
                     + "[7]Pesquisar uma musica\n"
+                    + "[8]Gerir playlist\n"
+                    + "[9]Verificar criticas\n"
                     + "[0]Logout");
             opcao_s = reader.next();
             try {
@@ -213,6 +220,11 @@ public class main {
                 case 7://pesquisar musica numero 13
                     pesquisarPorNome(14);
                     break;
+                case 8: //gerir playlist
+                    menu_playlist();
+                case 9:
+                    listar(19);
+                    break;
                 case 12://teste para album
                     listar(14);
                     break;
@@ -246,11 +258,11 @@ public class main {
         String nomeMusica, opcao_s = null;
         Scanner sc = new Scanner(System.in);
         do {//manter o login aberto a nao ser que peça para sair
-            try {
+            /*try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
             System.out.println("-----------Menu de Editor-----------\n"
                     + "[1]Listar música\n"
                     + "[2]Gerir artistas\n"
@@ -268,6 +280,8 @@ public class main {
                     + "[14]Listar utilizadores\n"
                     + "[15]Gerir Playlist\n"
                     + "[16]Listar todas as playlists\n"
+                    + "[17]Verificar criticas\n"
+                    + "[18]Eliminar criticas\n"
                     + "[0]Logout");
             opcao_s = reader.next();
             try {
@@ -409,6 +423,12 @@ public class main {
                 case 16://listar playlist existentes com codigo 17
                     listar(17);
                     break;
+                case 17: //verificar criticas
+                    listar(19);
+                    break;
+                case 18:
+                    eliminar_critica();
+                    break;
                 case 0:
                     System.out.println("Logout");
                     break;
@@ -416,6 +436,24 @@ public class main {
                     System.out.println("Insira uma opção válida!");
             }
         } while (opcao != 0);
+
+    }
+    private static void eliminar_critica(){
+        Scanner sc = new Scanner(System.in);
+        listar(20);
+        System.out.println("Indique o id da critica a eliminar ou [0]Voltar");
+        int id = sc.nextInt();
+        if(id == 0)
+            return;
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement stmt = c.prepareStatement("DELETE FROM critica WHERE critica.id_critica=?");
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -701,7 +739,6 @@ public class main {
 
     private static void criar_playlist() {
         int privacidade;
-        int id_playlist = (int) (Math.random() + 1) * Integer.MAX_VALUE;
         java.util.Date data = new java.util.Date();
         java.sql.Date data_criacao_album = new java.sql.Date(data.getTime());
         String nome;
@@ -772,12 +809,37 @@ public class main {
                         break;
                     case 14://album
                         try {
+                            //para ver os detalhes de todos os albuns
                             stmt = c.prepareStatement("SELECT * FROM album where nome=?;");
                             stmt.setString(1, nome);
                             ResultSet rs = stmt.executeQuery();
                             rs.next();
                             System.out.println(rs.getString(1) + " : " + rs.getString(2) +
                                     " : " + rs.getString(3) + " : " + rs.getString(4));
+                            stmt.close();
+                            //para ver a media do album
+                            stmt = c.prepareStatement("SELECT avg(critica.pontuacao), count(*) FROM critica where critica.album_nome=?;");
+                            stmt.setString(1, nome);
+                            rs = stmt.executeQuery();
+                            rs.next();
+                            System.out.print("\t " + rs.getDouble(1) + " : " + rs.getInt(2) + "\n");
+                            stmt.close();
+                            System.out.println("Pretende [1]Criticar [2]Voltar");
+                            int opcao_a = sc.nextInt();
+                            if(opcao_a == 1){
+                                if(!verifica_critica_utilizador(nome))
+                                    criar_critica(nome);
+                                else{
+                                    System.out.println("Ja criticou");
+                                    break;
+                                }
+                                break;
+                            }else if(opcao_a == 2){
+                                break;
+                            }else{
+                                System.out.println("Opcao invalida");
+                                break;
+                            }
                         } catch (SQLException e) {
                             System.out.println("Album inexistente. Tentar outra vez? (1 - Sim | 0 - Nao)");
                         }
@@ -797,11 +859,61 @@ public class main {
                     default:
                         break;
                 }
+                break;
             } catch (IOException e) {
                 System.out.println(e);
             }
             opcao = sc.nextInt();
         }
+    }
+
+    private static void criar_critica(String nome_album){
+        InputStreamReader input = new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(input);
+        Scanner sc = new Scanner(System.in);
+        int pontuacao=0;
+        String justificacao=null;
+        java.util.Date data=new java.util.Date();
+        java.sql.Date data_criacao_critica = new java.sql.Date(data.getTime());
+
+        while(pontuacao<1 || pontuacao>10) {
+            System.out.println("Qual a pontuacao entre 1 a 10\n");
+            pontuacao = sc.nextInt();
+        }
+        System.out.println("Qual e a justificacao\n");
+        try {
+            justificacao = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement stmt = c.prepareStatement("INSERT INTO critica(data_criacao, id_critica, pontuacao, " +
+                    "justificacao, album_nome, album_data_lancamento, utilizador_cartao_cidadao) " + "VALUES (?,default ,?,?,?,?,?)");
+            stmt.setDate(1, data_criacao_critica);
+            stmt.setInt(2, pontuacao);
+            stmt.setString(3, justificacao);
+            stmt.setString(4, nome_album);
+            stmt.setDate(5,(java.sql.Date)verifica_data_lancamento_album(nome_album));
+            stmt.setInt(6, cartao_cidadao);
+            stmt.executeUpdate();
+            c.commit();
+            System.out.println("Critica adicionado");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    private static boolean verifica_critica_utilizador(String nome_album){
+        try {
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM critica where critica.utilizador_cartao_cidadao=? and critica.album_nome=?;");
+            stmt.setInt(1, cartao_cidadao);
+            stmt.setString(2, nome_album);
+            return verifica(stmt);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 
     private static void pesquisarMusicaPorAlbum(){
@@ -858,6 +970,7 @@ public class main {
 
         return opcao;
     }
+
     private static void listar(int tipo_info) {
         PreparedStatement stmt;
         Scanner sc = new Scanner(System.in);
@@ -986,6 +1099,30 @@ public class main {
                             System.out.println("Opcao invalida");
                             break;
                     }
+                }
+                break;
+            case 19://verificar minhas criticas
+                try {
+                    stmt = c.prepareStatement("SELECT * FROM critica where critica.utilizador_cartao_cidadao=?;");
+                    stmt.setInt(1, cartao_cidadao);
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()) {
+                        System.out.println("Critica: (pontuacao)" + rs.getDouble(3) +", (album)" +rs.getString(5) +  ", (critica)" + rs.getString(4));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 20://verificar todas as criticas
+                try {
+                    stmt = c.prepareStatement("SELECT * FROM critica, utilizador where critica.utilizador_cartao_cidadao=utilizador.cartao_cidadao;");
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()) {
+                        System.out.println("Critica: (id_critica)"+ rs.getInt(2) + ", (pontuacao)" + rs.getDouble(3) +", (album)" +rs.getString(5) +  ", (critica)"
+                                + rs.getString(4) + ", (data criaca)" + rs.getDate(1) + " ,(utilizador)" + rs.getString(9));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
                 break;
             default:
@@ -1558,7 +1695,7 @@ public class main {
 
     private static void inserir_artista() {
         String a, nome, tipo, informacao, nome_album;
-        java.sql.Date data;
+        java.util.Date data;
         int opc;
         String[] b;
         Scanner sc = new Scanner(System.in);
@@ -1579,12 +1716,12 @@ public class main {
                 System.out.println("Qual o nome do album associado a este artista?");
                 nome_album = sc.nextLine();
                 if(verificaAlbum(nome_album)){//Se o album já existir
-                    data = getAlbumDateWithNome(nome_album);
+                    data = verifica_data_lancamento_album(nome_album);
                     PreparedStatement stmt1 = c.prepareStatement("INSERT INTO artista_album(artista_nome, artista_tipo_artista, album_nome, album_data_lancamento)"+"VALUES (?,?,?,?)");
                     stmt1.setString(1,nome);
                     stmt1.setString(2,tipo);
                     stmt1.setString(3,nome_album);
-                    stmt1.setDate(4,data);
+                    stmt1.setDate(4,(Date)data);
 
                     stmt1.executeUpdate();
                     stmt1.close();
@@ -1595,12 +1732,12 @@ public class main {
                     if(opc==1){
                         inserir_album(nome_album);
 
-                        data = getAlbumDateWithNome(nome_album);
+                        data = verifica_data_lancamento_album(nome_album);
                         PreparedStatement stmt1 = c.prepareStatement("INSERT INTO artista_album(artista_nome, artista_tipo_artista, album_nome, album_data_lancamento)"+"VALUES (?,?,?,?)");
                         stmt1.setString(1,nome);
                         stmt1.setString(2,tipo);
                         stmt1.setString(3,nome_album);
-                        stmt1.setDate(4,data);
+                        stmt1.setDate(4,(Date)data);
 
                         stmt1.executeUpdate();
                         stmt1.close();
@@ -1848,8 +1985,7 @@ public class main {
         }
         return id;
     }
-<<<<<<< HEAD
-=======
+
     private static int getMusicIdWithPlayListNome(String nome){
         int id_musica = 0,id_playlist;
         try{
@@ -1877,19 +2013,7 @@ public class main {
         }
         return id;
     }
-    private static java.sql.Date getAlbumDateWithNome(String nome){
-        java.sql.Date data= null;
-        try{
-            PreparedStatement stmt = c.prepareStatement("SELECT data_lancamento FROM album where nome=?");
-            stmt.setString(1,nome);
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            data = rs.getDate("data_lancamento");
-        } catch (SQLException e) {
-            System.out.println("Não encontrou ficheiro");
-        }
-        return data;
-    }
+
     /*private static String getArtistaTipoWithNome(String nome){
         String tipo = null;
         try{
@@ -1904,5 +2028,4 @@ public class main {
         return tipo;
 
     }*/
->>>>>>> 6bb9d65a45836b9fc32a86544e4f7ffa81190f20
 }
