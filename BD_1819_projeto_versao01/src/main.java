@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
+
+import javax.xml.crypto.Data;
 import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
@@ -294,6 +296,7 @@ public class main {
                             inserir_artista();
                             break;
                         case 2:
+                            editar_artista();
                             break;
                         case 3:
                             elimina_artista();
@@ -415,6 +418,7 @@ public class main {
         } while (opcao != 0);
 
     }
+
     private static void menu_playlist(){
         Scanner sc = new Scanner(System.in);
         String opcao_s;
@@ -491,6 +495,7 @@ public class main {
             System.out.println(e);
         }
     }
+
     private static void download(){
         String nome_musica;
         int id_ficheiro,id_musica;
@@ -534,6 +539,7 @@ public class main {
             System.out.println(e);
         }
     }
+
     private static void eliminar_playlist() {
         String nome;
         int id_playlist;
@@ -796,7 +802,7 @@ public class main {
         int opcao = 1,idMusica;
         String nomeAlbum;
         while (opcao == 1) {
-            System.out.println("Insira o nome do album:                       [0]Voltar");
+            System.out.println("Insira o nome do album:                    ");
             nomeAlbum = sc.nextLine();
             idMusica = getMusicIdWithAlbumNome(nomeAlbum);
             opcao = getMusicas(idMusica);
@@ -808,12 +814,25 @@ public class main {
     int opcao = 1,idMusica;
     String nomeArtista;
         while (opcao == 1) {
-            System.out.println("Insira o nome do artista:                    [0]Voltar");
+            System.out.println("Insira o nome do artista:                   ");
             nomeArtista = sc.nextLine();
             idMusica = getMusicIdWithArtistaNome(nomeArtista);
             opcao = getMusicas(idMusica);
         }
     }
+
+    private static void pesquisarMusicaPorPlaylist(){
+        Scanner sc = new Scanner(System.in);
+        int opcao = 1,idMusica;
+        String nomePlayList;
+        while (opcao==1){
+            System.out.println("Insira o nome da PlayList:  ");
+            nomePlayList = sc.nextLine();
+            idMusica = getMusicIdWithPlayListNome(nomePlayList);
+            opcao = getMusicas(idMusica);
+        }
+    }
+
     private static int getMusicas(int idMusica){
         Scanner sc = new Scanner(System.in);
         int opcao;
@@ -1051,6 +1070,97 @@ public class main {
         } else {
             System.out.println("Musica não encontrada");
         }
+    }
+
+    private static void editar_artista(){
+        String nome, tipo, info,nomeAct;
+        int opc;
+        Scanner sc =  new Scanner(System.in);
+        Scanner sc1 =  new Scanner(System.in);
+        System.out.println("Qual o nome do artista que pretende editar? ");
+        nome = sc.nextLine();
+
+        System.out.println("Pretende editar [1]Nome, [2]Tipo ou [3]Descrição [0]Voltar?\n");
+        opc = sc.nextInt();
+        if (opc == 0)
+            return;
+        if (verificaAlbum(nome)) {
+            try {
+                c.setAutoCommit(false);
+                switch (opc) {
+                    case 1:
+                        System.out.println("Qual o novo nome?");
+                        nomeAct = sc1.nextLine();
+                        //atualiza na tabela artista
+                        PreparedStatement stmt = c.prepareStatement("UPDATE artista SET nome = ? WHERE nome=? ");
+                        stmt.setString(1, nomeAct);
+                        stmt.setString(2, nome);
+                        //atualiza na tabela musica_artista
+                        PreparedStatement stmt1 = c.prepareStatement("UPDATE musica_artista SET artista_nome = ? WHERE artista_nome=? ");
+                        stmt1.setString(1, nomeAct);
+                        stmt1.setString(2, nome);
+                        //atualiza na tabela artista_album
+                        PreparedStatement stmt2 = c.prepareStatement("UPDATE artista_album SET artista_nome = ? WHERE artista_nome=? ");
+                        stmt2.setString(1, nomeAct);
+                        stmt2.setString(2, nome);
+
+                        stmt.executeUpdate();
+                        stmt1.executeUpdate();
+                        stmt2.executeUpdate();
+
+                        stmt.close();
+                        stmt1.close();
+                        stmt2.close();
+                        c.commit();
+                        break;
+                    case 2:
+                        System.out.println("Qual o novo tipo?");
+                        tipo = sc1.nextLine();
+                        //atualiza na tabela artista
+                        stmt = c.prepareStatement("UPDATE artista SET tipo_artista = ? WHERE nome=? ");
+                        stmt.setString(1, tipo);
+                        stmt.setString(2, nome);
+                        //atualiza na tabela musica_artista
+                        stmt1 = c.prepareStatement("UPDATE musica_artista SET artista_tipo_artista = ? WHERE artista_nome=? ");
+                        stmt1.setString(1, tipo);
+                        stmt1.setString(2, nome);
+                        //atualiza na tabela artista_album
+                        stmt2 = c.prepareStatement("UPDATE artista_album SET artista_tipo_artista = ? WHERE artista_nome=? ");
+                        stmt2.setString(1, tipo);
+                        stmt2.setString(2, nome);
+
+                        stmt.executeUpdate();
+                        stmt1.executeUpdate();
+                        stmt2.executeUpdate();
+
+                        stmt.close();
+                        stmt1.close();
+                        stmt2.close();
+                        c.commit();
+                        break;
+                    case 3:
+                        System.out.println("Qual o novo tipo?");
+                        info = sc1.nextLine();
+                        //atualiza na tabela artista
+                        stmt = c.prepareStatement("UPDATE artista SET tipo_artista = ? WHERE nome=? ");
+                        stmt.setString(1, info);
+                        stmt.setString(2, nome);
+
+                        stmt.executeUpdate();
+
+                        stmt.close();
+                        c.commit();
+                        break;
+                    default:
+                        System.out.println("Escolha uma opcao válida");
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        } else {
+            System.out.println("Artista não encontrado");
+        }
+
     }
 
     private static void editar_album() {
@@ -1339,15 +1449,14 @@ public class main {
                     opc = 0;
                     break;
                 case 4:
-
+                    pesquisarMusicaPorPlaylist();
+                    opc = 0;
                     break;
 
                 default:
                     System.out.println("Introduza uma opção válida!");
                     break;
             }
-
-
 
         }
     }
@@ -1400,7 +1509,9 @@ public class main {
     }
 
     private static void inserir_artista() {
-        String a, nome, tipo, informacao;
+        String a, nome, tipo, informacao, nome_album;
+        java.sql.Date data;
+        int opc;
         String[] b;
         Scanner sc = new Scanner(System.in);
         System.out.println("Nome Tipo_artista Informação");
@@ -1417,6 +1528,39 @@ public class main {
                 stmt.setString(2, tipo);
                 stmt.setString(3, informacao);
                 stmt.executeUpdate();
+                System.out.println("Qual o nome do album associado a este artista?");
+                nome_album = sc.nextLine();
+                if(verificaAlbum(nome_album)){//Se o album já existir
+                    data = getAlbumDateWithNome(nome_album);
+                    PreparedStatement stmt1 = c.prepareStatement("INSERT INTO artista_album(artista_nome, artista_tipo_artista, album_nome, album_data_lancamento)"+"VALUES (?,?,?,?)");
+                    stmt1.setString(1,nome);
+                    stmt1.setString(2,tipo);
+                    stmt1.setString(3,nome_album);
+                    stmt1.setDate(4,data);
+
+                    stmt1.executeUpdate();
+                    stmt1.close();
+
+                }else{//caso não exista
+                    System.out.println("Album inexistente! Pretende criar o [1]album ou [0]sair?");
+                    opc = sc.nextInt();
+                    if(opc==1){
+                        inserir_album(nome_album);
+
+                        data = getAlbumDateWithNome(nome_album);
+                        PreparedStatement stmt1 = c.prepareStatement("INSERT INTO artista_album(artista_nome, artista_tipo_artista, album_nome, album_data_lancamento)"+"VALUES (?,?,?,?)");
+                        stmt1.setString(1,nome);
+                        stmt1.setString(2,tipo);
+                        stmt1.setString(3,nome_album);
+                        stmt1.setDate(4,data);
+
+                        stmt1.executeUpdate();
+                        stmt1.close();
+
+
+                    }
+
+                }
 
                 stmt.close();
                 c.commit();
@@ -1428,7 +1572,44 @@ public class main {
         }
     }
 
-    @Deprecated
+
+
+    private static void inserir_album(String nome) {
+        String a, genero, descricao;
+        java.util.Date data;
+        String[] b, d;
+        int dia, mes, ano;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Data_lancamento(dd/mm/aaaa) Genero Descricao");
+        a = sc.nextLine();
+        b = a.split(" ");
+        d = b[0].split("/");
+        genero = b[1];
+        descricao = b[2];
+        dia = Integer.parseInt(d[0]);
+        mes = Integer.parseInt(d[1]) - 1;
+        ano = Integer.parseInt(d[2]) - 1900;
+        data = new java.sql.Date(ano, mes, dia);
+        if (!verificaAlbum(nome)) {
+            try {
+                c.setAutoCommit(false);
+                PreparedStatement stmt = c.prepareStatement("INSERT INTO album(nome, data_lancamento, genero, descricao)" + "VALUES (?,?,?,?)");
+                stmt.setString(1, nome);
+                stmt.setDate(2, (Date) data);
+                stmt.setString(3, genero);
+                stmt.setString(4, descricao);
+
+                stmt.executeUpdate();
+                c.commit();
+                System.out.println("Artista adicionado");
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        } else {
+            System.out.println("Album já existente!");
+        }
+
+    }
     private static void inserir_album() {
         String a, nome, genero, descricao;
         java.sql.Date data;
@@ -1589,8 +1770,7 @@ public class main {
         }
         return id;
     }
-<<<<<<< HEAD
-=======
+
     private static int getMusicIdWithArtistaNome(String nome){
         int id = 0;
         try{
@@ -1605,7 +1785,7 @@ public class main {
         return id;
     }
     private static int getMusicIdWithAlbumNome(String nome){
-        int id = 0;
+        int id =0;
         try{
             PreparedStatement stmt = c.prepareStatement("SELECT musica_idmusica FROM musica_album where album_nome=?");
             stmt.setString(1,nome);
@@ -1617,6 +1797,58 @@ public class main {
         }
         return id;
     }
+    private static int getMusicIdWithPlayListNome(String nome){
+        int id_musica = 0,id_playlist;
+        try{
+            id_playlist = getPlayListIdWithPlayListName(nome);
+            PreparedStatement stmt = c.prepareStatement("SELECT musica_idmusica FROM playlist_musica where playlist_id_playlist=?");
+            stmt.setInt(1,id_playlist);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            id_musica = rs.getInt("musica_idmusica");
+        } catch (SQLException e) {
+            // System.out.println("Musica não encontrada");
+        }
+        return id_musica;
+    }
+    private static int getPlayListIdWithPlayListName(String nome){
+        int id = 0;
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT id_playlist FROM playlist where nome=?");
+            stmt.setString(1,nome);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            id = rs.getInt("id_playlist");
+        } catch (SQLException e) {
+            // System.out.println("Musica não encontrada");
+        }
+        return id;
+    }
+    private static java.sql.Date getAlbumDateWithNome(String nome){
+        java.sql.Date data= null;
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT data_lancamento FROM album where nome=?");
+            stmt.setString(1,nome);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            data = rs.getDate("data_lancamento");
+        } catch (SQLException e) {
+            System.out.println("Não encontrou ficheiro");
+        }
+        return data;
+    }
+    /*private static String getArtistaTipoWithNome(String nome){
+        String tipo = null;
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT tipo_artista FROM artista where nome=?");
+            stmt.setString(1,nome);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            tipo = rs.getString("tipo_artista");
+        } catch (SQLException e) {
+            System.out.println("Não encontrou Arista");
+        }
+        return tipo;
 
->>>>>>> 0634e9eb20e2799f08934717ca2c0b8fe4330cc0
+    }*/
 }
