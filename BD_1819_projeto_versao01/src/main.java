@@ -387,7 +387,8 @@ public class main {
                 case 10: //partilhar musica
                     break;
                 case 11://pesquisar musica numero 13
-                    pesquisarPorNome(13);
+                    menuPesquisaMusicas();
+
                     break;
                 case 12://teste para album
                     listar(14);
@@ -732,7 +733,7 @@ public class main {
         Scanner sc = new Scanner(System.in);
         int opcao = 1;
         while (opcao == 1) {
-            System.out.println("Insira o nome: ");
+            System.out.println("Insira o nome:                  [0]Voltar");
             try {
                 nome = reader_linha.readLine();
                 switch (tipo_info) {
@@ -782,6 +783,47 @@ public class main {
         }
     }
 
+    private static void pesquisarMusicaPorAlbum(){
+        Scanner sc = new Scanner(System.in);
+        int opcao = 1,idMusica;
+        String nomeAlbum;
+        while (opcao == 1) {
+            System.out.println("Insira o nome do album:                       [0]Voltar");
+            nomeAlbum = sc.nextLine();
+            idMusica = getMusicIdWithAlbumNome(nomeAlbum);
+            opcao = getMusicas(idMusica);
+        }
+    }
+
+    private static void pesquisarMusicaPorArtista() {
+    Scanner sc = new Scanner(System.in);
+    int opcao = 1,idMusica;
+    String nomeArtista;
+        while (opcao == 1) {
+            System.out.println("Insira o nome do artista:                    [0]Voltar");
+            nomeArtista = sc.nextLine();
+            idMusica = getMusicIdWithArtistaNome(nomeArtista);
+            opcao = getMusicas(idMusica);
+        }
+    }
+    private static int getMusicas(int idMusica){
+        Scanner sc = new Scanner(System.in);
+        int opcao;
+        try {
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM musica where idmusica=?;");
+            stmt.setInt(1, idMusica);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            System.out.println(rs.getString(1) + " : " + rs.getString(2) + " : "
+                    + rs.getString(3));
+            opcao = 0;
+        } catch (SQLException e) {
+            System.out.println("Musica inexistente. Tentar outra vez? (1 - Sim | 0 - Nao)");
+            opcao = sc.nextInt();
+        }
+
+        return opcao;
+    }
     private static void listar(int tipo_info) {
         PreparedStatement stmt;
         switch (tipo_info) {
@@ -1253,6 +1295,38 @@ public class main {
         return data_lancamento;
     }
 
+    private static void menuPesquisaMusicas(){
+        Scanner sc = new Scanner(System.in);
+        int opc =1;
+        while (opc>=1){
+            System.out.println("Pretende pesquisar [1]Nome, [2]Autor, [3]Album, [4]Playlist ou [0]Voltar");
+            opc = sc.nextInt();
+            switch (opc){
+                case 1:
+                    pesquisarPorNome(13);
+                    break;
+                case 2:
+                    pesquisarMusicaPorArtista();
+                    opc = 0;
+                    break;
+                case 3:
+                    pesquisarMusicaPorAlbum();
+                    opc = 0;
+                    break;
+                case 4:
+
+                    break;
+
+                default:
+                    System.out.println("Introduza uma opção válida!");
+                    break;
+            }
+
+
+
+        }
+    }
+
     private static void insere_musica_tabela_musica_album(PreparedStatement stmt,int id_musica ,String
             album_musica, Date album_musica_data_lancamento) {
         try {
@@ -1490,6 +1564,31 @@ public class main {
         }
         return id;
     }
-
+    private static int getMusicIdWithArtistaNome(String nome){
+        int id = 0;
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT musica_idmusica FROM musica_artista where artista_nome=?");
+            stmt.setString(1,nome);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            id = rs.getInt("musica_idmusica");
+        } catch (SQLException e) {
+            // System.out.println("Musica não encontrada");
+        }
+        return id;
+    }
+    private static int getMusicIdWithAlbumNome(String nome){
+        int id = 0;
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT musica_idmusica FROM musica_album where album_nome=?");
+            stmt.setString(1,nome);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            id = rs.getInt("musica_idmusica");
+        } catch (SQLException e) {
+            // System.out.println("Musica não encontrada");
+        }
+        return id;
+    }
 
 }
