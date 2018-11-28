@@ -1,31 +1,12 @@
-import jdk.swing.interop.SwingInterOpUtils;
 import org.apache.commons.io.FileUtils;
-import org.postgresql.util.PSQLException;
-
-import java.io.*;
-import java.io.FileInputStream;
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 
-import javax.xml.crypto.Data;
-import java.io.InputStream;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
 import java.sql.*;
-
-import static java.rmi.Naming.list;
-
+import java.util.Scanner;
 public class main {
 
     private static Connection c = null;
@@ -258,13 +239,10 @@ public class main {
         String nomeMusica, opcao_s = null;
         Scanner sc = new Scanner(System.in);
         do {//manter o login aberto a nao ser que peça para sair
-<<<<<<< HEAD
             /*try {
                 Thread.sleep(2000);
-=======
             try {
                 Thread.sleep(1000);
->>>>>>> b0b79609dd8235cbc2a26701816934590214bebd
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
@@ -1486,7 +1464,7 @@ public class main {
                 stmt1.setString(1, nome);
                 stmt1.setString(2,tipo);
                 stmt1.executeUpdate();
-                //muisca_artista
+                //muusica_artista
                 PreparedStatement stmt2 = c.prepareStatement("DELETE FROM musica_artista WHERE artista_nome=? AND artista_tipo_artista=?");
                 stmt2.setString(1,nome);
                 stmt2.setString(2,tipo);
@@ -1514,19 +1492,30 @@ public class main {
     }
 
     private static void elimina_album() {
-        int id;
         String nome;
         Scanner sc = new Scanner(System.in);
         System.out.println("Qual o nome do album que pretende eliminar?");
         nome = sc.nextLine();
         if (verificaAlbum(nome)) {
             try {
+                //muusica_album
+                PreparedStatement stmt2 = c.prepareStatement("DELETE FROM musica_album WHERE album_nome=? ");
+                stmt2.setString(1,nome);
+                stmt2.executeUpdate();
+                //artista_album
+                PreparedStatement stmt1 = c.prepareStatement("DELETE FROM artista_album WHERE album_nome=?;");
+                stmt1.setString(1, nome);
+                stmt1.executeUpdate();
                 c.setAutoCommit(false);
                 PreparedStatement stmt = c.prepareStatement("DELETE FROM album where nome=?");
                 stmt.setString(1, nome);
                 stmt.executeUpdate();
 
+
+
                 stmt.close();
+                stmt1.close();
+                stmt2.close();
                 c.commit();
             } catch (SQLException e) {
                 System.out.println(e);
