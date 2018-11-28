@@ -475,9 +475,9 @@ public class main {
         } catch (FileNotFoundException e) {
             System.out.println("Não encontrou o ficheiro");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
     private static void download(){
@@ -519,7 +519,7 @@ public class main {
         } catch (SQLException e) {
             System.out.println(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
     private static void eliminar_playlist() {
@@ -572,7 +572,7 @@ public class main {
         try {
             nome_playlist_corrente = reader.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
 
         if (verifica_playlist(nome_playlist_corrente)) {
@@ -580,7 +580,7 @@ public class main {
             try {
                 nome_musica = reader.readLine();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e);
             }
 
             if (opcao == 1) {//quer adicionar musicas
@@ -599,7 +599,7 @@ public class main {
                     stmt.close();
                     c.commit();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
 
             } else if (opcao == 2) {//remover uma musica da playlist
@@ -612,7 +612,7 @@ public class main {
                     stmt.close();
                     c.commit();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
 
             } else if (opcao == 3) {
@@ -632,9 +632,9 @@ public class main {
                             stmt.close();
                             c.commit();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            System.out.println(e);
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            System.out.println(e);
                         }
                         break;
                     case 2://caso pretenda editar a privacidade para publico
@@ -648,7 +648,7 @@ public class main {
                             stmt.close();
                             c.commit();
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            System.out.println(e);
                         }
                         break;
                     case 3://caso pretenda mudar a privacidade para privado
@@ -662,7 +662,7 @@ public class main {
                             stmt.close();
                             c.commit();
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            System.out.println(e);
                         }
                         break;
                     default:
@@ -775,7 +775,7 @@ public class main {
                         break;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e);
             }
             opcao = sc.nextInt();
         }
@@ -793,7 +793,7 @@ public class main {
                                 + " : " + rs.getString(2) + " : " + rs.getString(3) + " : " + rs.getString(4));
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
                 break;
             case 15://artista
@@ -805,7 +805,7 @@ public class main {
                                 + " : " + rs.getString(2) + " : " + rs.getString(3));
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
                 break;
             case 13://musica
@@ -817,7 +817,7 @@ public class main {
                                 + " : " + rs.getString(3) + " : " + rs.getString(4));
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
                 break;
             case 16://utilizador
@@ -828,7 +828,7 @@ public class main {
                         System.out.println("\nUtilizador: " + rs.getString(1) + " : " + rs.getString(2));
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
                 break;
             case 17: //playlist
@@ -840,7 +840,7 @@ public class main {
                                 " : from : " + rs.getString(6) + " : " + rs.getString(7));
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
                 break;
             case 18://playlist de utilizador corrente
@@ -852,7 +852,7 @@ public class main {
                         System.out.println("\nPlaylist: " + rs.getString(1) + " : " + rs.getString(2) + " : " + rs.getString(3));
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    System.out.println(e);
                 }
                 break;
             default:
@@ -872,7 +872,7 @@ public class main {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return false;
     }
@@ -888,7 +888,7 @@ public class main {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return false;
     }
@@ -938,7 +938,7 @@ public class main {
             nome_musica = reader.readLine();
             System.out.println("Letra da musica ou (--n)");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
 
         System.out.println("Pretende editar [1]Letra ou [2]Concerto [0]Voltar?\n");
@@ -976,9 +976,9 @@ public class main {
                         System.out.println("Escolha uma opcao válida");
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println(e);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e);
             }
         } else {
             System.out.println("Musica não encontrada");
@@ -1028,7 +1028,7 @@ public class main {
                         System.out.println("Escolha uma opcao válida");
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println(e);
             }
         } else {
             System.out.println("Album não encontrado");
@@ -1081,7 +1081,7 @@ public class main {
 
             return id_musica;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         } catch (NullPointerException e) {
             return 0;
         }
@@ -1131,7 +1131,7 @@ public class main {
                 stmt.close();
                 c.commit();
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println(e);
             }
             System.out.println("Album eliminado");
         } else {
@@ -1208,7 +1208,7 @@ public class main {
             stmt.close();
             c.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
@@ -1223,7 +1223,7 @@ public class main {
             tipo_artista = rs.getString(1);
             return tipo_artista;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         } catch (NullPointerException e) {
             return null;
         }
@@ -1241,7 +1241,7 @@ public class main {
             data_lancamento = rs.getDate(1);
             return data_lancamento;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         } catch (NullPointerException e) {
             return null;
         }
@@ -1256,7 +1256,7 @@ public class main {
             stmt.close();
             c.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
@@ -1272,7 +1272,7 @@ public class main {
             stmt.close();
             c.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
@@ -1286,7 +1286,7 @@ public class main {
             }
             return tamanho;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         } catch (NullPointerException n) {
             return 0;
         }
@@ -1367,7 +1367,7 @@ public class main {
             stmt.setString(1, nome);
             return verifica(stmt);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return false;
     }
@@ -1378,7 +1378,7 @@ public class main {
             stmt.setString(1, nome);
             return verifica(stmt);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return false;
 
@@ -1391,7 +1391,7 @@ public class main {
             stmt.setString(2, tipo);
             return verifica(stmt);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return false;
     }
@@ -1402,7 +1402,7 @@ public class main {
             stmt.setString(1, nome);
             return verifica(stmt);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return false;
     }
@@ -1420,7 +1420,7 @@ public class main {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return false;
     }
@@ -1438,7 +1438,7 @@ public class main {
 
             return id_playlist;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         } catch (NullPointerException e) {
             return 0;
         }
@@ -1453,7 +1453,7 @@ public class main {
             rs.next();
             id = rs.getInt("idmusica");
         } catch (SQLException e) {
-            e.printStackTrace();
+           // System.out.println("Musica não encontrada");
         }
         return id;
     }
@@ -1466,7 +1466,7 @@ public class main {
             rs.next();
             id = rs.getInt("cartao_cidadao");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Não encontrou utilizador");
         }
         return id;
     }
@@ -1479,7 +1479,7 @@ public class main {
             rs.next();
             id = rs.getInt("ficheiro_id");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Não encontrou ficheiro");
         }
         return id;
     }
