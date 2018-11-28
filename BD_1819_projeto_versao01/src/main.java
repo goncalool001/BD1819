@@ -8,12 +8,18 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 import java.sql.*;
 
 public class main {
     private static Connection c = null;
+    private static Utilizador utilizador_corrente;
+    private static int cartao_cidadao;
     public static void main(String args[]) throws IOException {
         try {
             Class.forName("org.postgresql.Driver");
@@ -38,8 +44,8 @@ public class main {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
         String mensagem;
-
-        int opcao = 0;
+        String opcao_s = null;
+        int opcao=0, tipo_utilizador;
 
         do {
             System.out.println("-----------Menu Inicial-----------\n"
@@ -47,75 +53,98 @@ public class main {
                     + "[2]Registar\n"
                     + "[3]Sair\n");
 
-            opcao = sc.nextInt();
+            opcao_s= sc.next();
+            try {
+                opcao = Integer.parseInt(opcao_s);
+            } catch (NumberFormatException n) {
+                System.out.println("Insira um numero valido");
+                continue;
+            }
 
             switch (opcao) {
                 case 1: //login
                     System.out.println("Nome Passe");
                     frase = reader.readLine();
                     frase_chave_valor = frase.split(" ");
+                    if(frase_chave_valor.length<2) {
+                        System.out.println("Insira todos os parametros");
+                        continue;
+                    }
                     username = frase_chave_valor[0];
                     password = frase_chave_valor[1];
-                    if(login(username, password)){
-                        if(verificaUser(username)){
+                    tipo_utilizador = login(username, password);
+                    if(tipo_utilizador==1) {
+                        /*if(verificaUser(username)){
                             menu_login_editor();
-                        }
+                            para que esta funcao?! se o login devolve e porque encontrou o user
+                        }*/
+                        menu_login_normal();
+                    }else if(tipo_utilizador == 2){
+                        menu_login_editor();
                     }else{
                         menu_inicial();
                     }
                     //}else
                     break;
                 case 2://registar
-                    System.out.println("Nome Passe");
+                    System.out.println("Nome Passe CC");
                     frase = reader.readLine();
                     frase_chave_valor = frase.split(" ");
                     username = frase_chave_valor[0];
                     password = frase_chave_valor[1];
-
+                    cartao_cidadao = Integer.parseInt(frase_chave_valor[2]);
                     registar(username, password);
                     break;
             }
         } while (opcao != 3);
     }
-    private static boolean login(String username, String passe){//verifica se existe um utilizador com username e pass indicada
+    private static int login(String username, String passe){//verifica se existe um utilizador com username e pass indicada
+        //devolve 0 se nao tiver utilizador ou passe errada
+        //devolve 1 se o utilizador nao for editor
+        //devolve 2 se o utilizador for editor
         PreparedStatement stmt = null;
         try {
             stmt = c.prepareStatement("SELECT * FROM utilizador where nome = ? and passe = ?;");
             stmt.setString(1,username);
             stmt.setString(2,passe);
-
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()!=false) {
-                return true;
-            }
+            rs.next();
+            utilizador_corrente = new Utilizador(username, passe, rs.getBoolean(4));
+            cartao_cidadao = rs.getInt(1);
+            if(rs.getBoolean(4))//tem direitos
+                return 2;
+            else if(!rs.getBoolean(4))//nao tem direitos
+                return 1;
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return false;
+        return 0;
     }
     private static void registar(String username, String passe){
         if(verificaUserEmpty()){//se nao houver users na bd é editor
             try {
                 c.setAutoCommit(false);
-                Utilizador util = new Utilizador(username,passe,true);
-                PreparedStatement stmt = c.prepareStatement("INSERT INTO utilizador(cartao_cidadao, nome, passe, utilizador_tipo)"+"VALUES (DEFAULT,?,?,true)");
-                stmt.setString(1,util.getUsername());
-                stmt.setString(2,util.getPassword());
+                Utilizador util = new Utilizador(username,passe,true); //mudar caso seja primeiro
+                PreparedStatement stmt = c.prepareStatement("INSERT INTO utilizador(cartao_cidadao, nome, passe, utilizador_tipo)"+"VALUES (?,?,?,true)");
+                stmt.setInt(1,cartao_cidadao);
+                stmt.setString(2,util.getUsername());
+                stmt.setString(3, util.getPassword());
                 stmt.executeUpdate();
 
                 stmt.close();
                 c.commit();
             } catch (SQLException e) {
-                System.out.println(e);;
+                System.out.println(e);
             }
         }else {
             try {
                 c.setAutoCommit(false);
                 Utilizador util = new Utilizador(username, passe, false);
-                PreparedStatement stmt = c.prepareStatement("INSERT INTO utilizador(cartao_cidadao, nome, passe, utilizador_tipo)" + "VALUES (DEFAULT,?,?,false)");
-                stmt.setString(1, util.getUsername());
-                stmt.setString(2, util.getPassword());
+                PreparedStatement stmt = c.prepareStatement("INSERT INTO utilizador(cartao_cidadao, nome, passe, utilizador_tipo)" + "VALUES (?,?,?,false)");
+                stmt.setInt(1, cartao_cidadao);
+                stmt.setString(2, util.getUsername());
+                stmt.setString(3, util.getPassword());
                 stmt.executeUpdate();
 
                 stmt.close();
@@ -126,14 +155,80 @@ public class main {
         }
 
     }
+    private static void menu_login_normal(){
+        Scanner reader = new Scanner(System.in);
+        int opcao=0;
+        String opcao_s = null;
+        do {//manter o login aberto a nao ser que peça para sair
+            System.out.println("-----------Menu-----------\n"
+                    + "[1]Listar música\n"
+                    + "[2]Consultar detalhes album\n"
+                    + "[3]Consultar detalhes artista\n"
+                    + "[4]Upload de música\n"
+                    + "[5]Download de música\n"
+                    + "[6]Partilhar uma música\n"
+                    + "[7]Pesquisar uma musica\n"
+                    + "[0]Logout");
+            opcao_s = reader.next();
+            try {
+                opcao = Integer.parseInt(opcao_s);
+            }catch (NumberFormatException e){
+                System.out.println("Insira uma opcao valida");
+                continue;
+            }
+
+            switch (opcao) {
+                case 1: //listar as musicas 13
+                    System.out.println("A listar musicas");
+                    listar(13);
+                    break;
+
+                case 2: //detalhes do album numero 14
+                    pesquisar(14);
+                    break;
+                case 3: //detalhe artista numero 15
+                    pesquisar(15);
+                    break;
+                case 4: //upload de musica
+                    /*server_i.enviaStringAoMulticast("16");
+                    System.out.println("Qual o nome da Música a fazer upload?\n");
+                    nomeMusica = sc.nextLine();
+                    TimeUnit.MILLISECONDS.sleep(200);
+                    uploadTCP(nomeMusica);*/
+                    break;
+                case 5: //download de musica
+                    break;
+                case 6: //partilhar musica
+                    break;
+                case 7://pesquisar musica numero 13
+                    pesquisar(14);
+                    break;
+                case 12://teste para album
+                    listar(14);
+                    break;
+                case 13://teste para artista
+                    listar(15);
+                    break;
+                case 14://teste para utilizador 16
+                    listar(16);
+                    break;
+                case 0:
+                    System.out.println("Logout");
+                    break;
+                default:
+                    System.out.println("Insira uma opção válida!");
+            }
+        }while (opcao != 0);
+
+    }
     private static void menu_login_editor(){
         Scanner reader = new Scanner(System.in);
         /*if( System.getProperty( "os.name" ).startsWith( "Window" ) )
             Runtime.getRuntime().exec("cls");
         else
             Runtime.getRuntime().exec("clear");*/
-        int opcao;
-        String nomeMusica;
+        int opcao=0, o;
+        String nomeMusica, opcao_s = null;
         Scanner sc = new Scanner(System.in);
         do {//manter o login aberto a nao ser que peça para sair
             System.out.println("-----------Menu de Editor-----------\n"
@@ -141,17 +236,26 @@ public class main {
                     + "[2]Gerir artistas\n"
                     + "[3]Gerir álbuns\n"
                     + "[4]Gerir músicas\n"
-                    + "[5]Dar privilégios de editor a um utilizador\n"
+                    + "[5]Privilégios de editor a um utilizador\n"
                     + "[6]Consultar detalhes album\n"
                     + "[7]Consultar detalhes artista\n"
                     + "[8]Upload de música\n"
                     + "[9]Download de música\n"
                     + "[10]Partilhar uma música\n"
                     + "[11]Pesquisar uma musica\n"
+                    + "[12]Listar album\n"
+                    + "[13]Listar artista\n"
+                    + "[14]Listar utilizadores\n"
+                    + "[15]Gerir Playlist\n"
+                    + "[16]Listar todas as playlists\n"
                     + "[0]Logout");
-
-            opcao = reader.nextInt();
-            int o;
+            opcao_s = reader.next();
+            try {
+                opcao = Integer.parseInt(opcao_s);
+            }catch (NumberFormatException e){
+                System.out.println("Insira uma opcao valida");
+                continue;
+            }
 
             switch (opcao) {
                 case 1: //listar as musicas 13
@@ -160,7 +264,13 @@ public class main {
                     break;
                 case 2: //gerir artistas
                     System.out.println("Pretende [1]adicionar, [2]editar ou [3]eliminar um artista [0]Voltar");
-                    o = sc.nextInt();
+                    opcao_s = sc.next();
+                    try {
+                        o = Integer.parseInt(opcao_s);
+                    }catch (NumberFormatException e){
+                        System.out.println("Insira opcao valida");
+                        continue;
+                    }
                     switch (o) {
                         case 1:
                             inserir_artista();
@@ -180,7 +290,14 @@ public class main {
                     break;
                 case 3: ///gerir album
                     System.out.println("Pretende [1]adicionar, [2]editar ou [3]eliminar uma album [0]Voltar");
-                    o = sc.nextInt();
+                    opcao_s = sc.next();
+                    try {
+                        o = Integer.parseInt(opcao_s);
+                    }catch (NumberFormatException e){
+                        System.out.println("Insira opcao valida");
+                        continue;
+                    }
+
                     switch (o) {
                         case 1:
                             inserir_album();
@@ -200,7 +317,14 @@ public class main {
                     break;
                 case 4: //gerir musica
                     System.out.printf("Pretende [1]adicionar, [2]editar ou [3]eliminar uma musica [0]Voltar");
-                    o = sc.nextInt();
+                    opcao_s = sc.next();
+                    try {
+                        o = Integer.parseInt(opcao_s);
+                    }catch (NumberFormatException e){
+                        System.out.println("Insira opcao valida");
+                        continue;
+                    }
+
                     switch (o) {
                         case 1:
                             inserir_musica();
@@ -219,7 +343,17 @@ public class main {
                     }
                     break;
                 case 5: // privilégios de editor
-                    darPrivilegio();
+                    System.out.println("Pretende [1]dar privilegios ou [2]retirar privilegios [0]Voltar");
+                    opcao_s = sc.next();
+                    try {
+                        o = Integer.parseInt(opcao_s);
+                    }catch (NumberFormatException e){
+                        System.out.println("Insira opcao valida");
+                        continue;
+                    }
+                    if(o== 0)
+                        return;
+                    privilegio(o);
                     break;
                 case 6: //detalhes do album numero 14
                     pesquisar(14);
@@ -250,6 +384,41 @@ public class main {
                 case 14://teste para utilizador 16
                     listar(16);
                     break;
+                case 15://gerir playlist
+                    System.out.printf("Pretende [1]adicionar, [2]editar ou [3]eliminar [4]listar [0]Voltar");
+                    opcao_s = sc.next();
+                    try {
+                        o = Integer.parseInt(opcao_s);
+                    }catch (NumberFormatException e){
+                        System.out.println("Insira opcao valida");
+                        continue;
+                    }
+
+                    switch (o) {
+                        case 1:
+                            criar_playlist();
+                            break;
+                        case 2:
+                            System.out.println("Pretende [1]adicionar musica, [2]remover uma musica ou [3]editar informcacao da playlist");
+                            editar_playlist(Integer.parseInt(sc.next()));
+                            break;
+                        case 3:
+                            //eliminar_playlist();
+                            eliminar_playlist();
+                            break;
+                        case  4://codigo 18 para listar playlist do utilizador_corrente
+                            listar(18);
+                            break;
+                        case 0:
+                            break;
+                        default:
+                            System.out.println("Introduza uma opção válida!");
+                            break;
+                    }
+                    break;
+                case 16://listar playlist existentes com codigo 17
+                    listar(17);
+                    break;
                 case 0:
                     System.out.println("Logout");
                     break;
@@ -257,6 +426,204 @@ public class main {
                     System.out.println("Insira uma opção válida!");
             }
         }while (opcao != 0);
+
+    }
+    private static void eliminar_playlist(){
+        String nome;
+        int id_playlist;
+        Scanner sc = new Scanner(System.in);
+        PreparedStatement stmt;
+        System.out.println("Qual o nome da playlist que quer eliminar?");
+        nome = sc.nextLine();
+        id_playlist = procura_id_playlist(nome);
+        if(id_playlist==0){
+            System.out.println("Playlist inexistente");
+            return;
+        }
+        if(verifica_playlist(nome)){
+            try{
+                c.setAutoCommit(false);
+                //apagar da tabela playlist_utilziador
+                stmt = c.prepareStatement("DELETE FROM playlist_utilizador WHERE playlist_utilizador.playlist_id_playlist=?");
+                stmt.setInt(1, id_playlist);
+                stmt.close();
+
+                //apagar da tabela playlist_musica
+                stmt = c.prepareStatement("DELETE FROM playlist_musica WHERE playlist_musica.playlist_id_playlist=?");
+                stmt.setInt(1, id_playlist);
+                stmt.close();
+
+                //apagar da tabela playlist
+                stmt =  c.prepareStatement("DELETE FROM playlist WHERE nome=?");
+                stmt.setString(1,nome);
+                stmt.executeUpdate();
+                c.commit();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            System.out.println("Playlist Eliminada!");
+        }else{
+            System.out.println("Playlist não encontrada...");
+        }
+    }
+    private static void editar_playlist(int opcao){
+        InputStreamReader input = new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(input);
+        Scanner sc = new Scanner(System.in);
+        String nome_playlist_corrente=null, nome_playlist_muda, nome_musica=null;
+        int id_musica, id_playlist;
+        PreparedStatement stmt;
+        System.out.println("Qual o nome da playlist");
+        try {
+            nome_playlist_corrente = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(verifica_playlist(nome_playlist_corrente)) {
+            System.out.println("Escreva o nome da musica");
+            try {
+                nome_musica = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (opcao == 1) {//quer adicionar musicas
+                listar(13); //listar as musicas existentes
+                try {
+                    c.setAutoCommit(false);
+
+                    id_musica = verifica_id_musica(nome_musica);
+                    id_playlist = procura_id_playlist(nome_playlist_corrente);
+                    stmt = c.prepareStatement("INSERT INTO playlist_musica(playlist_id_playlist, playlist_utilizador_cartao_cidadao, musica_idmusica) " + "VALUES (?,?,?)");
+                    stmt.setInt(1, id_playlist);
+                    stmt.setInt(2, cartao_cidadao);
+                    stmt.setInt(3, id_musica);
+                    stmt.executeUpdate();
+
+                    stmt.close();
+                    c.commit();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }else if(opcao == 2){//remover uma musica da playlist
+                try {
+                    c.setAutoCommit(false);
+                    //apagar da tabela playlist_utilziador
+                    id_musica = verifica_id_musica(nome_musica);
+                    stmt = c.prepareStatement("DELETE FROM playlist_musica WHERE playlist_musica.musica_idmusica=?");
+                    stmt.setInt(1, id_musica);
+                    stmt.close();
+                    c.commit();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (opcao == 3) {
+                System.out.println("Pretende editar [1]Nome ou [2]Privacidade(Publico) ou [3]Privacidade(Privado) [0]Voltar?\n");
+                switch (sc.nextInt()) {
+                    case 1://caso pretenda editar o nome da playlist
+                        System.out.println("Qual é o nome?");
+                        try {
+                            c.setAutoCommit(false);
+
+                            nome_playlist_muda = reader.readLine();
+                            stmt = c.prepareStatement("UPDATE playlist SET nome = ? WHERE nome=?");
+                            stmt.setString(1, nome_playlist_muda);
+                            stmt.setString(2, nome_playlist_corrente);
+                            stmt.executeUpdate();
+
+                            stmt.close();
+                            c.commit();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 2://caso pretenda editar a privacidade para publico
+                        try {
+                            c.setAutoCommit(false);
+
+                            stmt = c.prepareStatement("UPDATE playlist SET privacidade = true WHERE nome=?");
+                            stmt.setString(1, nome_playlist_corrente);
+                            stmt.executeUpdate();
+
+                            stmt.close();
+                            c.commit();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 3://caso pretenda mudar a privacidade para privado
+                        try {
+                            c.setAutoCommit(false);
+
+                            stmt = c.prepareStatement("UPDATE playlist SET privacidade = false WHERE nome=?");
+                            stmt.setString(1, nome_playlist_corrente);
+                            stmt.executeUpdate();
+
+                            stmt.close();
+                            c.commit();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }else{
+            System.out.println("Playlist " + nome_playlist_corrente + " inexistente");
+        }
+    }
+    private static void criar_playlist(){
+        int privacidade;
+        int id_playlist = (int)(Math.random()+1)*Integer.MAX_VALUE;
+        Date data = new Date();
+        java.sql.Date data_criacao_album = new java.sql.Date(data.getTime());
+        String nome;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nome");
+        nome = sc.next();
+        System.out.println("A playlist " + nome + " sera [1]publica ou [2]privada");
+        privacidade = sc.nextInt();
+        PreparedStatement stmt;
+        if(!verifica_playlist(nome)){
+            try{
+                c.setAutoCommit(false);
+                //por na tabela playlist
+                stmt = c.prepareStatement("INSERT INTO playlist(id_playlist, nome, data_criacao, privacidade, utilizador_cartao_cidadao)"+"VALUES (?,?,?,?,?)");
+                stmt.setInt(1,id_playlist);
+                stmt.setString(2, nome);
+                stmt.setDate(3, data_criacao_album);
+                if(privacidade == 1)
+                    stmt.setBoolean(4, true);
+                if(privacidade == 2)
+                    stmt.setBoolean(4, false);
+                stmt.setInt(5, cartao_cidadao);
+                stmt.executeUpdate();
+
+                //por na tabela playlist_utilizador
+                //verificar aqui o atributo playlist_utilizador_cartao_cidadao
+                System.out.println(cartao_cidadao);
+
+                stmt = c.prepareStatement("INSERT INTO playlist_utilizador(playlist_id_playlist, playlist_utilizador_cartao_cidadao, utilizador_cartao_cidadao)"+"VALUES (?,?,?)");
+                stmt.setInt(1,id_playlist);
+                System.out.println(cartao_cidadao);
+                stmt.setInt(2, cartao_cidadao);
+                stmt.setInt(3, cartao_cidadao);
+                stmt.executeUpdate();
+
+                c.commit();
+                System.out.println("PlayList adicionada");
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }else {
+            System.out.println("PlayList já existente!");
+        }
 
     }
     private static void pesquisar(int tipo_info){
@@ -356,12 +723,36 @@ public class main {
                     e.printStackTrace();
                 }
                 break;
-            case 16:
+            case 16://utilizador
                 try{
                     stmt = c.prepareStatement("SELECT * FROM utilizador;");
                     ResultSet rs = stmt.executeQuery();
                     while(rs.next()){
                         System.out.println("\nUtilizador: " + rs.getString(1) + " : " + rs.getString(2));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 17: //playlist
+                try{
+                    stmt = c.prepareStatement("SELECT * from playlist, utilizador where playlist.utilizador_cartao_cidadao = utilizador.cartao_cidadao;");
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()){
+                        System.out.println("\nPlaylist: " + rs.getString(2) + " : " + rs.getString(3) + " : " + rs.getString(4) +
+                                " : from : " + rs.getString(6) + " : " + rs.getString(7));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 18://playlist de utilizador corrente
+                try{
+                    stmt = c.prepareStatement("SELECT * FROM playlist_utilizador where playlist_utilizador.playlist_utilizador_cartao_cidadao=?;");
+                    stmt.setInt(1,cartao_cidadao);
+                    ResultSet rs = stmt.executeQuery();
+                    while(rs.next()){
+                        System.out.println("\nPlaylist: " + rs.getString(1) + " : " + rs.getString(2) + " : " + rs.getString(3));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -402,15 +793,24 @@ public class main {
         }
         return false;
     }
-    private static void darPrivilegio(){
+    private static void privilegio(int tipo){
+        //dar privilegio 1
+        //retirar privilegio 2
         String nome;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Qual o utilizador a quem quer dar privilégios de editor?");
+        if(tipo==1)
+            System.out.println("Qual o utilizador a quem quer dar privilégios de editor?");
+        else
+            System.out.println("Qual o utilizador a quem quer dar privilégios de editor?");
         nome = sc.nextLine();
+        PreparedStatement stmt;
         if(verificaUser(nome)){
             try {
                 c.setAutoCommit(false);
-                PreparedStatement stmt = c.prepareStatement("UPDATE utilizador SET utilizador_tipo = true WHERE nome=?" );
+                if(tipo==1)
+                    stmt = c.prepareStatement("UPDATE utilizador SET utilizador_tipo = true WHERE nome=?" );
+                else
+                    stmt = c.prepareStatement("UPDATE utilizador SET utilizador_tipo = false WHERE nome=?" );
                 stmt.setString(1,nome);
                 stmt.executeUpdate();
 
@@ -565,13 +965,17 @@ public class main {
     }
 
     private static int verifica_id_musica(String nome){
-        int id_musica = 0;
+        int id_musica=0;
         PreparedStatement stmt = null;
+
         try {
-            ResultSet rs = stmt.executeQuery("SELECT musica.idmusica as linha FROM musica WHERE musica.nome==nome;");
-            while(rs.next()){
-                id_musica = rs.getInt("linha");
-            }
+            stmt = c.prepareStatement("SELECT musica.idmusica FROM musica WHERE musica.nome = ?");
+            stmt.setString(1,nome);
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            id_musica = rs.getInt(1);
+
             return id_musica;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -659,26 +1063,27 @@ public class main {
                 ciclo_go=0;
             }else
                 ciclo_go=1;
+
             if(ciclo_go==0) {
                 System.out.println("Continuar? (0-Sim | 1-Nao)");
                 ciclo_go = sc.nextInt();
             }
         }
-        if(ciclo_go == 1)
-            return;
+        System.out.println("Antes de verifica");
         posicao_musica = verifia_tamanho_album(album_musica);
+        System.out.println("Antes de fazer print depois de verifica");
         System.out.println("\nverifica posicao: " + posicao_musica);
         if(!verifica_musica(nome_musica)){
             try{
                 System.out.println("\ndentro de sql");
                 c.setAutoCommit(false);
                 //inserir na tabela musica
-                PreparedStatement stmt = c.prepareStatement("INSERT INTO musica(id_musica, nome_musica, letra_musica, concerto_musica, posicao_musica) "+"VALUES (?,?,?,?,?)");
+                PreparedStatement stmt = c.prepareStatement("INSERT INTO musica(idmusica, nome, letra, concertos, posicao) "+"VALUES (?,?,?,?,?)");
                 insere_musica_tabela_musica(stmt, id_musica, nome_musica, letra_musica, concerto_musica, posicao_musica);
                 //inserir na tabela musica_album
-                stmt = c.prepareStatement("INSERT INTO musica_album(id_musica, album_musica, album_musica_data_lancamento) "+"VALUES (?,?,?)");
+                stmt = c.prepareStatement("INSERT INTO musica_album(musica_idmusica, album_nome, album_data_lancamento) "+"VALUES (?,?,?)");
                 insere_musica_tabela_musica_album(stmt, id_musica, album_musica, album_musica_data_lancamento);
-                stmt = c.prepareStatement("INSERT INTO musica_artista(funcao_artista_musica, nome_artista_musica, tipo_artista, id_musica) "+"VALUES (?,?,?,?)");
+                stmt = c.prepareStatement("INSERT INTO musica_artista(funcao, artista_nome, artista_tipo_artista, musica_idmusica) "+"VALUES (?,?,?,?)");
                 insere_musica_musica_artista(stmt, funcao_artista_musica, nome_artista_musica, tipo_artista, id_musica);
             } catch (SQLException e) {
                 System.out.println(e);
@@ -769,6 +1174,8 @@ public class main {
             return tamanho;
         } catch (SQLException e) {
             e.printStackTrace();
+        }catch (NullPointerException n){
+            return 0;
         }
         return tamanho;
     }
@@ -870,6 +1277,16 @@ public class main {
         }
         return false;
     }
+    private static boolean verifica_playlist(String nome){
+        try{
+            PreparedStatement stmt = c.prepareStatement("SELECT * FROM playlist where nome=?;");
+            stmt.setString(1,nome);
+            return verifica(stmt);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     private static boolean verifica(PreparedStatement stmt){
         try {
             ResultSet rs = stmt.executeQuery();
@@ -887,5 +1304,24 @@ public class main {
             e.printStackTrace();
         }
         return false;
+    }
+    private static int procura_id_playlist(String nome){
+        int id_playlist = 0;
+        PreparedStatement stmt = null;
+        try {
+            stmt = c.prepareStatement("SELECT playlist.id_playlist FROM playlist WHERE playlist.nome = ?");
+            stmt.setString(1,nome);
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            id_playlist = rs.getInt(1);
+
+            return id_playlist;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
+            return 0;
+        }
+        return id_playlist;
     }
 }
