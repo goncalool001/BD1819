@@ -1807,6 +1807,9 @@ public class main {
             return;
         }
         d = b[0].split("/");
+        if(d.length!=3){
+            System.out.println("Erro ao introduzir a data! ");
+        }
         genero = b[1];
         descricao = b[2];
         dia = Integer.parseInt(d[0]);
@@ -1846,6 +1849,9 @@ public class main {
             System.out.println("Erro no número de argumentos");
         }
         d = b[1].split("/");
+        if(d.length!=3){
+            System.out.println("Erro ao introduzir a data! ");
+        }
         nome = b[0];
         genero = b[2];
         descricao = b[3];
