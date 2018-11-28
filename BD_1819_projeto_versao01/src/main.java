@@ -1184,11 +1184,11 @@ public class main {
                 System.out.println("\ndentro de sql");
                 c.setAutoCommit(false);
                 //inserir na tabela musica
-                PreparedStatement stmt = c.prepareStatement("INSERT INTO musica(idmusica, nome, letra, concertos, posicao) " + "VALUES (?,?,?,?,?)");
-                insere_musica_tabela_musica(stmt, id_musica, nome_musica, letra_musica, concerto_musica, posicao_musica);
+                PreparedStatement stmt = c.prepareStatement("INSERT INTO musica(idmusica, nome, letra, concertos, posicao) " + "VALUES (default ,?,?,?,?)");
+                insere_musica_tabela_musica(stmt, nome_musica, letra_musica, concerto_musica, posicao_musica);
                 //inserir na tabela musica_album
-                stmt = c.prepareStatement("INSERT INTO musica_album(musica_idmusica, album_nome, album_data_lancamento) " + "VALUES (?,?,?)");
-                insere_musica_tabela_musica_album(stmt, id_musica, album_musica, album_musica_data_lancamento);
+                stmt = c.prepareStatement("INSERT INTO musica_album(musica_idmusica, album_nome, album_data_lancamento) " + "VALUES (DEFAULT ,?,?)");
+                insere_musica_tabela_musica_album(stmt, album_musica, album_musica_data_lancamento);
                 stmt = c.prepareStatement("INSERT INTO musica_artista(funcao, artista_nome, artista_tipo_artista, musica_idmusica) " + "VALUES (?,?,?,?)");
                 insere_musica_musica_artista(stmt, funcao_artista_musica, nome_artista_musica, tipo_artista, id_musica);
             } catch (SQLException e) {
@@ -1248,12 +1248,11 @@ public class main {
         return data_lancamento;
     }
 
-    private static void insere_musica_tabela_musica_album(PreparedStatement stmt, int id_musica, String
+    private static void insere_musica_tabela_musica_album(PreparedStatement stmt, String
             album_musica, Date album_musica_data_lancamento) {
         try {
-            stmt.setInt(1, id_musica);
-            stmt.setString(2, album_musica);
-            stmt.setDate(3, (java.sql.Date) album_musica_data_lancamento);
+            stmt.setString(1, album_musica);
+            stmt.setDate(2, (java.sql.Date) album_musica_data_lancamento);
             stmt.close();
             c.commit();
         } catch (SQLException e) {
@@ -1261,14 +1260,14 @@ public class main {
         }
     }
 
-    private static void insere_musica_tabela_musica(PreparedStatement stmt, int id_musica, String
+    private static void insere_musica_tabela_musica(PreparedStatement stmt, String
             nome_musica, String letra_musica, String concerto_musica, int posicao_musica) {
         try {
-            stmt.setInt(1, id_musica);
-            stmt.setString(2, nome_musica);
-            stmt.setString(3, letra_musica);
-            stmt.setString(4, concerto_musica);
-            stmt.setInt(5, posicao_musica);
+
+            stmt.setString(1, nome_musica);
+            stmt.setString(2, letra_musica);
+            stmt.setString(3, concerto_musica);
+            stmt.setInt(4, posicao_musica);
             stmt.executeUpdate();
             stmt.close();
             c.commit();
