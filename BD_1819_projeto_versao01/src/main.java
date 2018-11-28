@@ -199,7 +199,7 @@ public class main {
                 case 6: //partilhar musica
                     break;
                 case 7://pesquisar musica numero 13
-                    pesquisarPorNome(14);
+                    menuPesquisaMusicas();
                     break;
                 case 8: //gerir playlist
                     menu_playlist();
@@ -421,7 +421,6 @@ public class main {
         } while (opcao != 0);
 
     }
-
     private static void eliminar_critica(){
         Scanner sc = new Scanner(System.in);
         listar(20);
@@ -807,13 +806,6 @@ public class main {
                             rs = stmt.executeQuery();
                             rs.next();
                             System.out.print("\t " + rs.getDouble(1) + " : " + rs.getInt(2) + "\n");
-                            stmt.close();
-                            //para ver as musicas do album
-                            stmt = c.prepareStatement("SELECT * FROM musica_album, musica where musica_album.musica_idmusica=musica.idmusica and musica_album.album_nome=?;");
-                            stmt.setString(1, nome);
-                            rs = stmt.executeQuery();
-                            rs.next();
-                            System.out.print("\t , (nome album)" + rs.getString(2) + " ,(data lancamento)" + rs.getDate(3) + " ,(nome musica)" + rs.getString(5) + "\n");
                             stmt.close();
                             System.out.println("Pretende [1]Criticar [2]Voltar");
                             int opcao_a = sc.nextInt();
@@ -1547,6 +1539,10 @@ public class main {
             //teste teste teste teste teste teste
             a = sc.nextLine();
             b = a.split(" ");
+            if(b.length!=6){
+                System.out.println("Erro no número de argumentos");
+                return;
+            }
             nome_musica = b[0];
             letra_musica = b[1];
             concerto_musica = b[2];
@@ -1736,6 +1732,10 @@ public class main {
         System.out.println("Nome Tipo_artista Informação");
         a = sc.nextLine();
         b = a.split(" ");
+        if(b.length!=3){
+            System.out.println("Erro no número de argumentos");
+            return;
+        }
         nome = b[0];
         tipo = b[1];
         informacao = b[2];
@@ -1802,6 +1802,10 @@ public class main {
         System.out.println("Data_lancamento(dd/mm/aaaa) Genero Descricao");
         a = sc.nextLine();
         b = a.split(" ");
+        if(b.length!=3){
+            System.out.println("Erro no número de argumentos");
+            return;
+        }
         d = b[0].split("/");
         genero = b[1];
         descricao = b[2];
@@ -1829,7 +1833,6 @@ public class main {
         }
 
     }
-
     private static void inserir_album() {
         String a, nome, genero, descricao;
         java.util.Date data;
@@ -1839,6 +1842,9 @@ public class main {
         System.out.println("Nome Data_lancamento(dd/mm/aaaa) Genero Descricao");
         a = sc.nextLine();
         b = a.split(" ");
+        if(b.length!=4){
+            System.out.println("Erro no número de argumentos");
+        }
         d = b[1].split("/");
         nome = b[0];
         genero = b[2];
