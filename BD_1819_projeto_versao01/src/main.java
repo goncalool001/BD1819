@@ -199,10 +199,10 @@ public class main {
                     break;
 
                 case 2: //detalhes do album numero 14
-                    pesquisar(14);
+                    pesquisarPorNome(14);
                     break;
                 case 3: //detalhe artista numero 15
-                    pesquisar(15);
+                    pesquisarPorNome(15);
                     break;
                 case 4: //upload de musica
                     /*server_i.enviaStringAoMulticast("16");
@@ -212,11 +212,12 @@ public class main {
                     uploadTCP(nomeMusica);*/
                     break;
                 case 5: //download de musica
+                    download();
                     break;
                 case 6: //partilhar musica
                     break;
                 case 7://pesquisar musica numero 13
-                    pesquisar(14);
+                    pesquisarPorNome(14);
                     break;
                 case 12://teste para album
                     listar(14);
@@ -372,10 +373,10 @@ public class main {
                     privilegio(o);
                     break;
                 case 6: //detalhes do album numero 14
-                    pesquisar(14);
+                    pesquisarPorNome(14);
                     break;
                 case 7: //detalhe artista numero 15
-                    pesquisar(15);
+                    pesquisarPorNome(15);
                     break;
                 case 8: //upload de musica
                     upload();
@@ -386,7 +387,7 @@ public class main {
                 case 10: //partilhar musica
                     break;
                 case 11://pesquisar musica numero 13
-                    pesquisar(13);
+                    pesquisarPorNome(13);
                     break;
                 case 12://teste para album
                     listar(14);
@@ -723,7 +724,7 @@ public class main {
 
     }
 
-    private static void pesquisar(int tipo_info) {
+    private static void pesquisarPorNome(int tipo_info) {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader_linha = new BufferedReader(input);
         String nome;
@@ -1145,7 +1146,7 @@ public class main {
         Date album_musica_data_lancamento = null;
         String[] b;
         Scanner sc = new Scanner(System.in);
-        int id_musica = (int) (Math.random() + 1) * Integer.MAX_VALUE;
+        int id_musica;
 
         while (ciclo_go == 0) {
             System.out.println("Nome -Letra- Concerto Album Artista Funcao_do_artista");
@@ -1185,12 +1186,14 @@ public class main {
                 c.setAutoCommit(false);
                 //inserir na tabela musica
                 PreparedStatement stmt = c.prepareStatement("INSERT INTO musica(idmusica, nome, letra, concertos, posicao) " + "VALUES (default ,?,?,?,?)");
+
                 insere_musica_tabela_musica(stmt, nome_musica, letra_musica, concerto_musica, posicao_musica);
+                id_musica = getMusicId(nome_musica);
                 //inserir na tabela musica_album
-                stmt = c.prepareStatement("INSERT INTO musica_album(musica_idmusica, album_nome, album_data_lancamento) " + "VALUES (DEFAULT ,?,?)");
-                insere_musica_tabela_musica_album(stmt, album_musica, album_musica_data_lancamento);
-                stmt = c.prepareStatement("INSERT INTO musica_artista(funcao, artista_nome, artista_tipo_artista, musica_idmusica) " + "VALUES (?,?,?,?)");
-                insere_musica_musica_artista(stmt, funcao_artista_musica, nome_artista_musica, tipo_artista, id_musica);
+                PreparedStatement stmt1 = c.prepareStatement("INSERT INTO musica_album(musica_idmusica, album_nome, album_data_lancamento) " + "VALUES (? ,?,?)");
+                insere_musica_tabela_musica_album(stmt1,id_musica ,album_musica, album_musica_data_lancamento);
+                PreparedStatement stmt2 = c.prepareStatement("INSERT INTO musica_artista(funcao, artista_nome, artista_tipo_artista, musica_idmusica) " + "VALUES (?,?,?,? )");
+                insere_musica_musica_artista(stmt2, funcao_artista_musica, nome_artista_musica, tipo_artista, id_musica);
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -1205,6 +1208,8 @@ public class main {
             stmt.setString(2, nome_artista_musica);
             stmt.setString(3, tipo_artista);
             stmt.setInt(4, id_musica);
+            stmt.executeUpdate();
+
             stmt.close();
             c.commit();
         } catch (SQLException e) {
@@ -1248,11 +1253,13 @@ public class main {
         return data_lancamento;
     }
 
-    private static void insere_musica_tabela_musica_album(PreparedStatement stmt, String
+    private static void insere_musica_tabela_musica_album(PreparedStatement stmt,int id_musica ,String
             album_musica, Date album_musica_data_lancamento) {
         try {
-            stmt.setString(1, album_musica);
-            stmt.setDate(2, (java.sql.Date) album_musica_data_lancamento);
+            stmt.setInt(1,id_musica);
+            stmt.setString(2, album_musica);
+            stmt.setDate(3, (java.sql.Date) album_musica_data_lancamento);
+            stmt.executeUpdate();
             stmt.close();
             c.commit();
         } catch (SQLException e) {
