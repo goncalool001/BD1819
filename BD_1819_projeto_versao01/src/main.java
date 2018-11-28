@@ -247,7 +247,7 @@ public class main {
         Scanner sc = new Scanner(System.in);
         do {//manter o login aberto a nao ser que peça para sair
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -1119,59 +1119,37 @@ public class main {
     }
 
     private static void editar_artista(){
-        String nome, tipo, info,nomeAct;
+        String nome, tipo,tipo_artista, info,nomeAct;
         int opc;
         Scanner sc =  new Scanner(System.in);
         Scanner sc1 =  new Scanner(System.in);
+        Scanner sc2 = new Scanner(System.in);
         System.out.println("Qual o nome do artista que pretende editar? ");
         nome = sc.nextLine();
+        System.out.println("Qual o tipo do artista? ");
+        tipo_artista = sc.nextLine();
 
-        System.out.println("Pretende editar [1]Nome, [2]Tipo ou [3]Descrição [0]Voltar?\n");
-        opc = sc.nextInt();
+        System.out.println("Pretende editar [1]Tipo ou [2]Informação [0]Voltar?");
+        opc = sc2.nextInt();
         if (opc == 0)
             return;
-        if (verificaAlbum(nome)) {
+        if (verificaArtista(nome,tipo_artista)) {
             try {
                 c.setAutoCommit(false);
                 switch (opc) {
                     case 1:
-                        System.out.println("Qual o novo nome?");
-                        nomeAct = sc1.nextLine();
-                        //atualiza na tabela artista
-                        PreparedStatement stmt = c.prepareStatement("UPDATE artista SET nome = ? WHERE nome=? ");
-                        stmt.setString(1, nomeAct);
-                        stmt.setString(2, nome);
-                        //atualiza na tabela musica_artista
-                        PreparedStatement stmt1 = c.prepareStatement("UPDATE musica_artista SET artista_nome = ? WHERE artista_nome=? ");
-                        stmt1.setString(1, nomeAct);
-                        stmt1.setString(2, nome);
-                        //atualiza na tabela artista_album
-                        PreparedStatement stmt2 = c.prepareStatement("UPDATE artista_album SET artista_nome = ? WHERE artista_nome=? ");
-                        stmt2.setString(1, nomeAct);
-                        stmt2.setString(2, nome);
-
-                        stmt.executeUpdate();
-                        stmt1.executeUpdate();
-                        stmt2.executeUpdate();
-
-                        stmt.close();
-                        stmt1.close();
-                        stmt2.close();
-                        c.commit();
-                        break;
-                    case 2:
                         System.out.println("Qual o novo tipo?");
                         tipo = sc1.nextLine();
                         //atualiza na tabela artista
-                        stmt = c.prepareStatement("UPDATE artista SET tipo_artista = ? WHERE nome=? ");
+                        PreparedStatement stmt = c.prepareStatement("UPDATE artista SET tipo_artista = ? WHERE nome=? ");
                         stmt.setString(1, tipo);
                         stmt.setString(2, nome);
                         //atualiza na tabela musica_artista
-                        stmt1 = c.prepareStatement("UPDATE musica_artista SET artista_tipo_artista = ? WHERE artista_nome=? ");
+                        PreparedStatement stmt1 = c.prepareStatement("UPDATE musica_artista SET artista_tipo_artista = ? WHERE artista_nome=? ");
                         stmt1.setString(1, tipo);
                         stmt1.setString(2, nome);
                         //atualiza na tabela artista_album
-                        stmt2 = c.prepareStatement("UPDATE artista_album SET artista_tipo_artista = ? WHERE artista_nome=? ");
+                        PreparedStatement stmt2 = c.prepareStatement("UPDATE artista_album SET artista_tipo_artista = ? WHERE artista_nome=? ");
                         stmt2.setString(1, tipo);
                         stmt2.setString(2, nome);
 
@@ -1184,11 +1162,11 @@ public class main {
                         stmt2.close();
                         c.commit();
                         break;
-                    case 3:
-                        System.out.println("Qual o novo tipo?");
+                    case 2:
+                        System.out.println("Qual a novo informacao?");
                         info = sc1.nextLine();
                         //atualiza na tabela artista
-                        stmt = c.prepareStatement("UPDATE artista SET tipo_artista = ? WHERE nome=? ");
+                        stmt = c.prepareStatement("UPDATE artista SET informacao = ? WHERE nome=? ");
                         stmt.setString(1, info);
                         stmt.setString(2, nome);
 
@@ -1210,14 +1188,16 @@ public class main {
     }
 
     private static void editar_album() {
-        String nome, descricao, genero;
-        int opc;
+        String nome, descricao, genero,a;
+        int opc, dia, mes, ano;
+        String[] b;
+        java.util.Date data;
         Scanner sc = new Scanner(System.in);
         Scanner sc1 = new Scanner(System.in);
         System.out.println("Qual o nome do album que pretende editar? ");
         nome = sc.nextLine();
 
-        System.out.println("Pretende editar [1]Descricao ou [2]genero [0]Voltar?\n");
+        System.out.println("Pretende editar [1]Descricao ou [2]genero [0]Voltar?");
         opc = sc.nextInt();
         if (opc == 0)
             return;
@@ -1225,12 +1205,49 @@ public class main {
             try {
                 c.setAutoCommit(false);
                 switch (opc) {
+                    /*case 1:
+                        System.out.println("Qual a nova data? (dd/mm/aaaa)");
+                        a = sc1.nextLine();
+                        b = a.split("/");
+                        try {
+                            ano = Integer.parseInt(b[2]) - 1900;
+                            dia = Integer.parseInt(b[0]);
+                            mes = Integer.parseInt(b[1]) - 1;
+                        }catch (ArrayIndexOutOfBoundsException | NumberFormatException e){
+                            System.out.println("Insira data de lancamento valida");
+                            return;
+                        }
+                        data = new java.sql.Date(ano, mes, dia);
+                        PreparedStatement stmt1 = c.prepareStatement("UPDATE album SET data_lancamento = ? WHERE nome=?");
+                        stmt1.setDate(1,(Date)data);
+                        stmt1.setString(2,nome);
+                        //artista_album
+                        PreparedStatement stmt3 = c.prepareStatement("UPDATE artista_album SET album_data_lancamento =? WHERE album_nome=?;");
+                        stmt3.setDate(1,(Date)data);
+                        stmt3.setString(2,nome);
+                        //musica_album
+                        PreparedStatement stmt4 = c.prepareStatement("UPDATE musica_album SET album_data_lancamento = ? WHERE album_nome=?;");
+                        stmt4.setDate(1,(Date)data);
+                        stmt4.setString(2,nome);
+
+                        stmt1.executeUpdate();
+                        stmt3.executeUpdate();
+                        stmt4.executeUpdate();
+
+                        stmt1.close();
+                        stmt3.close();
+                        stmt4.close();
+                        c.commit();
+
+                        break;*/
                     case 1:
                         System.out.println("Qual a nova descricao?");
                         descricao = sc1.nextLine();
+                        //atualiza na tabela album
                         PreparedStatement stmt = c.prepareStatement("UPDATE album SET descricao = ? WHERE nome=? ");
                         stmt.setString(1, descricao);
                         stmt.setString(2, nome);
+
                         stmt.executeUpdate();
 
                         stmt.close();
@@ -1239,13 +1256,13 @@ public class main {
                     case 2:
                         System.out.println("Qual o novo género do álbum?");
                         genero = sc1.nextLine();
-                        PreparedStatement stmt1 = c.prepareStatement("UPDATE album SET genero = ? WHERE nome=?");
+                        PreparedStatement stmt2 = c.prepareStatement("UPDATE album SET genero = ? WHERE nome=?");
 
-                        stmt1.setString(1, genero);
-                        stmt1.setString(2, nome);
-                        stmt1.executeUpdate();
+                        stmt2.setString(1, genero);
+                        stmt2.setString(2, nome);
+                        stmt2.executeUpdate();
 
-                        stmt1.close();
+                        stmt2.close();
                         c.commit();
                         break;
                     default:
@@ -1322,14 +1339,29 @@ public class main {
         if (verificaArtista(nome, tipo)) {
             try {
                 c.setAutoCommit(false);
-                PreparedStatement stmt = c.prepareStatement("DELETE FROM artista WHERE nome=?");
+                //artista_album
+                PreparedStatement stmt1 = c.prepareStatement("DELETE FROM artista_album WHERE artista_nome=? AND artista_tipo_artista=?");
+                stmt1.setString(1, nome);
+                stmt1.setString(2,tipo);
+                stmt1.executeUpdate();
+                //muisca_artista
+                PreparedStatement stmt2 = c.prepareStatement("DELETE FROM musica_artista WHERE artista_nome=? AND artista_tipo_artista=?");
+                stmt2.setString(1,nome);
+                stmt2.setString(2,tipo);
+                stmt2.executeUpdate();
+                PreparedStatement stmt = c.prepareStatement("DELETE FROM artista WHERE nome=? AND tipo_artista=?");
                 stmt.setString(1, nome);
+                stmt.setString(2,tipo);
                 stmt.executeUpdate();
 
+
                 stmt.close();
+                stmt1.close();
+                stmt2.close();
+
                 c.commit();
             } catch (SQLException e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
             System.out.println("Artista Eliminado!");
         } else {
@@ -1848,8 +1880,7 @@ public class main {
         }
         return id;
     }
-<<<<<<< HEAD
-=======
+
     private static int getMusicIdWithPlayListNome(String nome){
         int id_musica = 0,id_playlist;
         try{
@@ -1904,5 +1935,4 @@ public class main {
         return tipo;
 
     }*/
->>>>>>> 6bb9d65a45836b9fc32a86544e4f7ffa81190f20
 }
