@@ -258,13 +258,10 @@ public class main {
         String nomeMusica, opcao_s = null;
         Scanner sc = new Scanner(System.in);
         do {//manter o login aberto a nao ser que peça para sair
-<<<<<<< HEAD
             /*try {
                 Thread.sleep(2000);
-=======
             try {
                 Thread.sleep(1000);
->>>>>>> b0b79609dd8235cbc2a26701816934590214bebd
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
@@ -443,6 +440,7 @@ public class main {
         } while (opcao != 0);
 
     }
+
     private static void eliminar_critica(){
         Scanner sc = new Scanner(System.in);
         listar(20);
@@ -828,6 +826,13 @@ public class main {
                             rs = stmt.executeQuery();
                             rs.next();
                             System.out.print("\t " + rs.getDouble(1) + " : " + rs.getInt(2) + "\n");
+                            stmt.close();
+                            //para ver as musicas do album
+                            stmt = c.prepareStatement("SELECT * FROM musica_album, musica where musica_album.musica_idmusica=musica.idmusica and musica_album.album_nome=?;");
+                            stmt.setString(1, nome);
+                            rs = stmt.executeQuery();
+                            rs.next();
+                            System.out.print("\t , (nome album)" + rs.getString(2) + " ,(data lancamento)" + rs.getDate(3) + " ,(nome musica)" + rs.getString(5) + "\n");
                             stmt.close();
                             System.out.println("Pretende [1]Criticar [2]Voltar");
                             int opcao_a = sc.nextInt();
@@ -1832,6 +1837,7 @@ public class main {
         }
 
     }
+
     private static void inserir_album() {
         String a, nome, genero, descricao;
         java.util.Date data;
