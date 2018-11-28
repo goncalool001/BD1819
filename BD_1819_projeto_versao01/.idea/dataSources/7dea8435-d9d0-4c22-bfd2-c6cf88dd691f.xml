@@ -62,8 +62,8 @@
       <ObjectId>2200</ObjectId>
       <Comment>standard public schema</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionTimestamp>2018-11-28.13:15:48.156</IntrospectionTimestamp>
-      <IntrospectionStateNumber>648</IntrospectionStateNumber>
+      <IntrospectionTimestamp>2018-11-28.15:41:33.722</IntrospectionTimestamp>
+      <IntrospectionStateNumber>782</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -110,176 +110,176 @@
       <Type>index</Type>
     </access-method>
     <sequence id="19" parent="12" name="critica_id_critica_seq">
-      <ObjectId>17040</ObjectId>
+      <ObjectId>17612</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
     </sequence>
     <sequence id="20" parent="12" name="musica_idmusica_seq">
-      <ObjectId>17009</ObjectId>
+      <ObjectId>17581</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>606</StateNumber>
+      <StateNumber>746</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
     </sequence>
     <sequence id="21" parent="12" name="playlist_id_playlist_seq">
-      <ObjectId>17030</ObjectId>
+      <ObjectId>17602</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>608</StateNumber>
+      <StateNumber>748</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
     </sequence>
     <sequence id="22" parent="12" name="upload_ficheiro_id_seq">
-      <ObjectId>17051</ObjectId>
+      <ObjectId>17623</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>610</StateNumber>
+      <StateNumber>750</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
     </sequence>
     <sequence id="23" parent="12" name="utilizador_cartao_cidadao_seq">
-      <ObjectId>16985</ObjectId>
+      <ObjectId>17557</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>604</StateNumber>
+      <StateNumber>744</StateNumber>
       <SequenceIdentity>1</SequenceIdentity>
       <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
     </sequence>
     <table id="24" parent="12" name="album">
-      <ObjectId>17000</ObjectId>
+      <ObjectId>17572</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>645</StateNumber>
+      <StateNumber>779</StateNumber>
     </table>
     <table id="25" parent="12" name="artista">
-      <ObjectId>17020</ObjectId>
+      <ObjectId>17592</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>636</StateNumber>
+      <StateNumber>768</StateNumber>
     </table>
     <table id="26" parent="12" name="artista_album">
-      <ObjectId>17080</ObjectId>
+      <ObjectId>17652</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>631</StateNumber>
+      <StateNumber>770</StateNumber>
     </table>
     <table id="27" parent="12" name="critica">
-      <ObjectId>17042</ObjectId>
+      <ObjectId>17614</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>623</StateNumber>
+      <StateNumber>762</StateNumber>
     </table>
     <table id="28" parent="12" name="grupo_musical">
-      <ObjectId>17075</ObjectId>
+      <ObjectId>17647</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>628</StateNumber>
+      <StateNumber>767</StateNumber>
     </table>
     <table id="29" parent="12" name="musica">
-      <ObjectId>17011</ObjectId>
+      <ObjectId>17583</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>648</StateNumber>
+      <StateNumber>782</StateNumber>
     </table>
     <table id="30" parent="12" name="musica_album">
-      <ObjectId>17115</ObjectId>
+      <ObjectId>17678</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>645</StateNumber>
+      <StateNumber>779</StateNumber>
     </table>
     <table id="31" parent="12" name="musica_artista">
-      <ObjectId>17062</ObjectId>
+      <ObjectId>17634</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>635</StateNumber>
+      <StateNumber>766</StateNumber>
     </table>
     <table id="32" parent="12" name="musica_upload">
-      <ObjectId>17108</ObjectId>
+      <ObjectId>17671</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>642</StateNumber>
+      <StateNumber>776</StateNumber>
     </table>
     <table id="33" parent="12" name="playlist">
-      <ObjectId>17032</ObjectId>
+      <ObjectId>17604</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>646</StateNumber>
+      <StateNumber>780</StateNumber>
     </table>
     <table id="34" parent="12" name="playlist_musica">
-      <ObjectId>17120</ObjectId>
+      <ObjectId>17683</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>648</StateNumber>
+      <StateNumber>782</StateNumber>
     </table>
     <table id="35" parent="12" name="playlist_utilizador">
-      <ObjectId>17098</ObjectId>
+      <ObjectId>17661</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>638</StateNumber>
+      <StateNumber>772</StateNumber>
     </table>
     <table id="36" parent="12" name="upload">
-      <ObjectId>17053</ObjectId>
+      <ObjectId>17625</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>642</StateNumber>
+      <StateNumber>776</StateNumber>
     </table>
     <table id="37" parent="12" name="upload_utilizador">
-      <ObjectId>17103</ObjectId>
+      <ObjectId>17666</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>640</StateNumber>
+      <StateNumber>774</StateNumber>
     </table>
     <table id="38" parent="12" name="utilizador">
-      <ObjectId>16987</ObjectId>
+      <ObjectId>17559</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>647</StateNumber>
+      <StateNumber>781</StateNumber>
     </table>
     <column id="39" parent="24" name="nome">
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>605</StateNumber>
+      <StateNumber>745</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="40" parent="24" name="data_lancamento">
       <Position>2</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>605</StateNumber>
+      <StateNumber>745</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="41" parent="24" name="genero">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
-      <StateNumber>605</StateNumber>
+      <StateNumber>745</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="42" parent="24" name="descricao">
       <Position>4</Position>
       <DataType>varchar(20)|0s</DataType>
-      <StateNumber>605</StateNumber>
+      <StateNumber>745</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="43" parent="24" name="album_pkey">
-      <ObjectId>17003</ObjectId>
+      <ObjectId>17575</ObjectId>
       <ColNames>nome
 data_lancamento</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="44" parent="24" name="album_nome_key">
-      <ObjectId>17005</ObjectId>
+      <ObjectId>17577</ObjectId>
       <ColNames>nome</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="45" parent="24" name="album_data_lancamento_key">
-      <ObjectId>17007</ObjectId>
+      <ObjectId>17579</ObjectId>
       <ColNames>data_lancamento</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="46" parent="24" name="album_pkey">
-      <ObjectId>17004</ObjectId>
+      <ObjectId>17576</ObjectId>
       <ColNames>nome
 data_lancamento</ColNames>
       <UnderlyingIndexName>album_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <key id="47" parent="24" name="album_nome_key">
-      <ObjectId>17006</ObjectId>
+      <ObjectId>17578</ObjectId>
       <ColNames>nome</ColNames>
       <UnderlyingIndexName>album_nome_key</UnderlyingIndexName>
     </key>
     <key id="48" parent="24" name="album_data_lancamento_key">
-      <ObjectId>17008</ObjectId>
+      <ObjectId>17580</ObjectId>
       <ColNames>data_lancamento</ColNames>
       <UnderlyingIndexName>album_data_lancamento_key</UnderlyingIndexName>
     </key>
@@ -287,42 +287,42 @@ data_lancamento</ColNames>
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>607</StateNumber>
+      <StateNumber>747</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="50" parent="25" name="tipo_artista">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>607</StateNumber>
+      <StateNumber>747</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="51" parent="25" name="informacao">
       <Position>3</Position>
       <DataType>varchar(512)|0s</DataType>
-      <StateNumber>607</StateNumber>
+      <StateNumber>747</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="52" parent="25" name="artista_pkey">
-      <ObjectId>17026</ObjectId>
+      <ObjectId>17598</ObjectId>
       <ColNames>nome
 tipo_artista</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="53" parent="25" name="artista_nome_key">
-      <ObjectId>17028</ObjectId>
+      <ObjectId>17600</ObjectId>
       <ColNames>nome</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="54" parent="25" name="artista_pkey">
-      <ObjectId>17027</ObjectId>
+      <ObjectId>17599</ObjectId>
       <ColNames>nome
 tipo_artista</ColNames>
       <UnderlyingIndexName>artista_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <key id="55" parent="25" name="artista_nome_key">
-      <ObjectId>17029</ObjectId>
+      <ObjectId>17601</ObjectId>
       <ColNames>nome</ColNames>
       <UnderlyingIndexName>artista_nome_key</UnderlyingIndexName>
     </key>
@@ -330,85 +330,85 @@ tipo_artista</ColNames>
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>613</StateNumber>
+      <StateNumber>753</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="57" parent="26" name="artista_tipo_artista">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>613</StateNumber>
+      <StateNumber>753</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="58" parent="26" name="album_nome">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>613</StateNumber>
+      <StateNumber>753</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="59" parent="26" name="album_data_lancamento">
       <Position>4</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>613</StateNumber>
+      <StateNumber>753</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <index id="60" parent="26" name="artista_album_pkey">
-      <ObjectId>17083</ObjectId>
+      <ObjectId>17655</ObjectId>
       <ColNames>artista_nome
 artista_tipo_artista</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="61" parent="26" name="artista_album_album_nome_key">
-      <ObjectId>17085</ObjectId>
+      <ObjectId>17657</ObjectId>
       <ColNames>album_nome</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="62" parent="26" name="artista_album_album_data_lancamento_key">
-      <ObjectId>17087</ObjectId>
+      <ObjectId>17659</ObjectId>
       <ColNames>album_data_lancamento</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="63" parent="26" name="artista_album_pkey">
-      <ObjectId>17084</ObjectId>
+      <ObjectId>17656</ObjectId>
       <ColNames>artista_nome
 artista_tipo_artista</ColNames>
       <UnderlyingIndexName>artista_album_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <key id="64" parent="26" name="artista_album_album_nome_key">
-      <ObjectId>17086</ObjectId>
+      <ObjectId>17658</ObjectId>
       <ColNames>album_nome</ColNames>
       <UnderlyingIndexName>artista_album_album_nome_key</UnderlyingIndexName>
     </key>
     <key id="65" parent="26" name="artista_album_album_data_lancamento_key">
-      <ObjectId>17088</ObjectId>
+      <ObjectId>17660</ObjectId>
       <ColNames>album_data_lancamento</ColNames>
       <UnderlyingIndexName>artista_album_album_data_lancamento_key</UnderlyingIndexName>
     </key>
     <foreign-key id="66" parent="26" name="artista_album_fk1">
-      <ObjectId>17170</ObjectId>
+      <ObjectId>17733</ObjectId>
       <ColNames>artista_nome</ColNames>
-      <RefTableId>17020</RefTableId>
+      <RefTableId>17592</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>artista</RefTableName>
       <RefKeyName>artista_nome_key</RefKeyName>
       <RefColNames>nome</RefColNames>
     </foreign-key>
     <foreign-key id="67" parent="26" name="artista_album_fk3">
-      <ObjectId>17175</ObjectId>
+      <ObjectId>17738</ObjectId>
       <ColNames>album_nome</ColNames>
-      <RefTableId>17000</RefTableId>
+      <RefTableId>17572</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>album</RefTableName>
       <RefKeyName>album_nome_key</RefKeyName>
       <RefColNames>nome</RefColNames>
     </foreign-key>
     <foreign-key id="68" parent="26" name="artista_album_fk4">
-      <ObjectId>17180</ObjectId>
+      <ObjectId>17743</ObjectId>
       <ColNames>album_data_lancamento</ColNames>
-      <RefTableId>17000</RefTableId>
+      <RefTableId>17572</RefTableId>
       <RefColPositions>2</RefColPositions>
       <RefTableName>album</RefTableName>
       <RefKeyName>album_data_lancamento_key</RefKeyName>
@@ -418,14 +418,14 @@ artista_tipo_artista</ColNames>
       <Position>1</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="70" parent="27" name="id_critica">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <DefaultExpression>nextval(&apos;critica_id_critica_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>critica_id_critica_seq</SequenceName>
@@ -433,38 +433,38 @@ artista_tipo_artista</ColNames>
     <column id="71" parent="27" name="pontuacao">
       <Position>3</Position>
       <DataType>double precision|0s</DataType>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <TypeId>701</TypeId>
     </column>
     <column id="72" parent="27" name="justificacao">
       <Position>4</Position>
       <DataType>varchar(512)|0s</DataType>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="73" parent="27" name="album_nome">
       <Position>5</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="74" parent="27" name="album_data_lancamento">
       <Position>6</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="75" parent="27" name="utilizador_cartao_cidadao">
       <Position>7</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>609</StateNumber>
+      <StateNumber>749</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="76" parent="27" name="critica_pkey">
-      <ObjectId>17049</ObjectId>
+      <ObjectId>17621</ObjectId>
       <ColNames>data_criacao
 album_nome
 album_data_lancamento
@@ -472,7 +472,7 @@ utilizador_cartao_cidadao</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="77" parent="27" name="critica_pkey">
-      <ObjectId>17050</ObjectId>
+      <ObjectId>17622</ObjectId>
       <ColNames>data_criacao
 album_nome
 album_data_lancamento
@@ -481,27 +481,27 @@ utilizador_cartao_cidadao</ColNames>
       <Primary>1</Primary>
     </key>
     <foreign-key id="78" parent="27" name="critica_fk1">
-      <ObjectId>17130</ObjectId>
+      <ObjectId>17693</ObjectId>
       <ColNames>album_nome</ColNames>
-      <RefTableId>17000</RefTableId>
+      <RefTableId>17572</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>album</RefTableName>
       <RefKeyName>album_nome_key</RefKeyName>
       <RefColNames>nome</RefColNames>
     </foreign-key>
     <foreign-key id="79" parent="27" name="critica_fk2">
-      <ObjectId>17135</ObjectId>
+      <ObjectId>17698</ObjectId>
       <ColNames>album_data_lancamento</ColNames>
-      <RefTableId>17000</RefTableId>
+      <RefTableId>17572</RefTableId>
       <RefColPositions>2</RefColPositions>
       <RefTableName>album</RefTableName>
       <RefKeyName>album_data_lancamento_key</RefKeyName>
       <RefColNames>data_lancamento</RefColNames>
     </foreign-key>
     <foreign-key id="80" parent="27" name="critica_fk3">
-      <ObjectId>17140</ObjectId>
+      <ObjectId>17703</ObjectId>
       <ColNames>utilizador_cartao_cidadao</ColNames>
-      <RefTableId>16987</RefTableId>
+      <RefTableId>17559</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>utilizador</RefTableName>
       <RefKeyName>utilizador_cartao_cidadao_key</RefKeyName>
@@ -511,32 +511,32 @@ utilizador_cartao_cidadao</ColNames>
       <Position>1</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>612</StateNumber>
+      <StateNumber>752</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="82" parent="28" name="artista_nome">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>612</StateNumber>
+      <StateNumber>752</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="83" parent="28" name="artista_tipo_artista">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>612</StateNumber>
+      <StateNumber>752</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="84" parent="28" name="grupo_musical_pkey">
-      <ObjectId>17078</ObjectId>
+      <ObjectId>17650</ObjectId>
       <ColNames>data
 artista_nome
 artista_tipo_artista</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="85" parent="28" name="grupo_musical_pkey">
-      <ObjectId>17079</ObjectId>
+      <ObjectId>17651</ObjectId>
       <ColNames>data
 artista_nome
 artista_tipo_artista</ColNames>
@@ -544,9 +544,9 @@ artista_tipo_artista</ColNames>
       <Primary>1</Primary>
     </key>
     <foreign-key id="86" parent="28" name="grupo_musical_fk1">
-      <ObjectId>17165</ObjectId>
+      <ObjectId>17728</ObjectId>
       <ColNames>artista_nome</ColNames>
-      <RefTableId>17020</RefTableId>
+      <RefTableId>17592</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>artista</RefTableName>
       <RefKeyName>artista_nome_key</RefKeyName>
@@ -556,7 +556,7 @@ artista_tipo_artista</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>606</StateNumber>
+      <StateNumber>746</StateNumber>
       <DefaultExpression>nextval(&apos;musica_idmusica_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>musica_idmusica_seq</SequenceName>
@@ -564,34 +564,34 @@ artista_tipo_artista</ColNames>
     <column id="88" parent="29" name="nome">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
-      <StateNumber>606</StateNumber>
+      <StateNumber>746</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="89" parent="29" name="letra">
       <Position>3</Position>
       <DataType>varchar(512)|0s</DataType>
-      <StateNumber>606</StateNumber>
+      <StateNumber>746</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="90" parent="29" name="concertos">
       <Position>4</Position>
       <DataType>varchar(20)|0s</DataType>
-      <StateNumber>606</StateNumber>
+      <StateNumber>746</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="91" parent="29" name="posicao">
       <Position>5</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>606</StateNumber>
+      <StateNumber>746</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="92" parent="29" name="musica_pkey">
-      <ObjectId>17018</ObjectId>
+      <ObjectId>17590</ObjectId>
       <ColNames>idmusica</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="93" parent="29" name="musica_pkey">
-      <ObjectId>17019</ObjectId>
+      <ObjectId>17591</ObjectId>
       <ColNames>idmusica</ColNames>
       <UnderlyingIndexName>musica_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
@@ -600,32 +600,32 @@ artista_tipo_artista</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>618</StateNumber>
+      <StateNumber>757</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="95" parent="30" name="album_nome">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>618</StateNumber>
+      <StateNumber>757</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="96" parent="30" name="album_data_lancamento">
       <Position>3</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>618</StateNumber>
+      <StateNumber>757</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <index id="97" parent="30" name="musica_album_pkey">
-      <ObjectId>17118</ObjectId>
+      <ObjectId>17681</ObjectId>
       <ColNames>musica_idmusica
 album_nome
 album_data_lancamento</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="98" parent="30" name="musica_album_pkey">
-      <ObjectId>17119</ObjectId>
+      <ObjectId>17682</ObjectId>
       <ColNames>musica_idmusica
 album_nome
 album_data_lancamento</ColNames>
@@ -633,27 +633,27 @@ album_data_lancamento</ColNames>
       <Primary>1</Primary>
     </key>
     <foreign-key id="99" parent="30" name="musica_album_fk1">
-      <ObjectId>17240</ObjectId>
+      <ObjectId>17778</ObjectId>
       <ColNames>musica_idmusica</ColNames>
-      <RefTableId>17011</RefTableId>
+      <RefTableId>17583</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>musica</RefTableName>
       <RefKeyName>musica_pkey</RefKeyName>
       <RefColNames>idmusica</RefColNames>
     </foreign-key>
     <foreign-key id="100" parent="30" name="musica_album_fk2">
-      <ObjectId>17245</ObjectId>
+      <ObjectId>17783</ObjectId>
       <ColNames>album_nome</ColNames>
-      <RefTableId>17000</RefTableId>
+      <RefTableId>17572</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>album</RefTableName>
       <RefKeyName>album_nome_key</RefKeyName>
       <RefColNames>nome</RefColNames>
     </foreign-key>
     <foreign-key id="101" parent="30" name="musica_album_fk3">
-      <ObjectId>17250</ObjectId>
+      <ObjectId>17788</ObjectId>
       <ColNames>album_data_lancamento</ColNames>
-      <RefTableId>17000</RefTableId>
+      <RefTableId>17572</RefTableId>
       <RefColPositions>2</RefColPositions>
       <RefTableName>album</RefTableName>
       <RefKeyName>album_data_lancamento_key</RefKeyName>
@@ -663,32 +663,32 @@ album_data_lancamento</ColNames>
       <Position>1</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>611</StateNumber>
+      <StateNumber>751</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="103" parent="31" name="artista_nome">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>611</StateNumber>
+      <StateNumber>751</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="104" parent="31" name="artista_tipo_artista">
       <Position>3</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>611</StateNumber>
+      <StateNumber>751</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="105" parent="31" name="musica_idmusica">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>611</StateNumber>
+      <StateNumber>751</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="106" parent="31" name="musica_artista_pkey">
-      <ObjectId>17065</ObjectId>
+      <ObjectId>17637</ObjectId>
       <ColNames>funcao
 artista_nome
 artista_tipo_artista
@@ -696,27 +696,27 @@ musica_idmusica</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="107" parent="31" name="musica_artista_funcao_key">
-      <ObjectId>17067</ObjectId>
+      <ObjectId>17639</ObjectId>
       <ColNames>funcao</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="108" parent="31" name="musica_artista_artista_nome_key">
-      <ObjectId>17069</ObjectId>
+      <ObjectId>17641</ObjectId>
       <ColNames>artista_nome</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="109" parent="31" name="musica_artista_artista_tipo_artista_key">
-      <ObjectId>17071</ObjectId>
+      <ObjectId>17643</ObjectId>
       <ColNames>artista_tipo_artista</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="110" parent="31" name="musica_artista_musica_idmusica_key">
-      <ObjectId>17073</ObjectId>
+      <ObjectId>17645</ObjectId>
       <ColNames>musica_idmusica</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="111" parent="31" name="musica_artista_pkey">
-      <ObjectId>17066</ObjectId>
+      <ObjectId>17638</ObjectId>
       <ColNames>funcao
 artista_nome
 artista_tipo_artista
@@ -725,38 +725,38 @@ musica_idmusica</ColNames>
       <Primary>1</Primary>
     </key>
     <key id="112" parent="31" name="musica_artista_funcao_key">
-      <ObjectId>17068</ObjectId>
+      <ObjectId>17640</ObjectId>
       <ColNames>funcao</ColNames>
       <UnderlyingIndexName>musica_artista_funcao_key</UnderlyingIndexName>
     </key>
     <key id="113" parent="31" name="musica_artista_artista_nome_key">
-      <ObjectId>17070</ObjectId>
+      <ObjectId>17642</ObjectId>
       <ColNames>artista_nome</ColNames>
       <UnderlyingIndexName>musica_artista_artista_nome_key</UnderlyingIndexName>
     </key>
     <key id="114" parent="31" name="musica_artista_artista_tipo_artista_key">
-      <ObjectId>17072</ObjectId>
+      <ObjectId>17644</ObjectId>
       <ColNames>artista_tipo_artista</ColNames>
       <UnderlyingIndexName>musica_artista_artista_tipo_artista_key</UnderlyingIndexName>
     </key>
     <key id="115" parent="31" name="musica_artista_musica_idmusica_key">
-      <ObjectId>17074</ObjectId>
+      <ObjectId>17646</ObjectId>
       <ColNames>musica_idmusica</ColNames>
       <UnderlyingIndexName>musica_artista_musica_idmusica_key</UnderlyingIndexName>
     </key>
     <foreign-key id="116" parent="31" name="musica_artista_fk1">
-      <ObjectId>17145</ObjectId>
+      <ObjectId>17708</ObjectId>
       <ColNames>artista_nome</ColNames>
-      <RefTableId>17020</RefTableId>
+      <RefTableId>17592</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>artista</RefTableName>
       <RefKeyName>artista_nome_key</RefKeyName>
       <RefColNames>nome</RefColNames>
     </foreign-key>
     <foreign-key id="117" parent="31" name="musica_artista_fk3">
-      <ObjectId>17160</ObjectId>
+      <ObjectId>17723</ObjectId>
       <ColNames>musica_idmusica</ColNames>
-      <RefTableId>17011</RefTableId>
+      <RefTableId>17583</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>musica</RefTableName>
       <RefKeyName>musica_pkey</RefKeyName>
@@ -766,50 +766,50 @@ musica_idmusica</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>617</StateNumber>
+      <StateNumber>756</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="119" parent="32" name="upload_ficheiro_id">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>617</StateNumber>
+      <StateNumber>756</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="120" parent="32" name="musica_upload_pkey">
-      <ObjectId>17111</ObjectId>
+      <ObjectId>17674</ObjectId>
       <ColNames>musica_idmusica</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="121" parent="32" name="musica_upload_upload_ficheiro_id_key">
-      <ObjectId>17113</ObjectId>
+      <ObjectId>17676</ObjectId>
       <ColNames>upload_ficheiro_id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="122" parent="32" name="musica_upload_pkey">
-      <ObjectId>17112</ObjectId>
+      <ObjectId>17675</ObjectId>
       <ColNames>musica_idmusica</ColNames>
       <UnderlyingIndexName>musica_upload_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <key id="123" parent="32" name="musica_upload_upload_ficheiro_id_key">
-      <ObjectId>17114</ObjectId>
+      <ObjectId>17677</ObjectId>
       <ColNames>upload_ficheiro_id</ColNames>
       <UnderlyingIndexName>musica_upload_upload_ficheiro_id_key</UnderlyingIndexName>
     </key>
     <foreign-key id="124" parent="32" name="musica_upload_fk1">
-      <ObjectId>17230</ObjectId>
+      <ObjectId>17768</ObjectId>
       <ColNames>musica_idmusica</ColNames>
-      <RefTableId>17011</RefTableId>
+      <RefTableId>17583</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>musica</RefTableName>
       <RefKeyName>musica_pkey</RefKeyName>
       <RefColNames>idmusica</RefColNames>
     </foreign-key>
     <foreign-key id="125" parent="32" name="musica_upload_fk2">
-      <ObjectId>17235</ObjectId>
+      <ObjectId>17773</ObjectId>
       <ColNames>upload_ficheiro_id</ColNames>
-      <RefTableId>17053</RefTableId>
+      <RefTableId>17625</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>upload</RefTableName>
       <RefKeyName>upload_pkey</RefKeyName>
@@ -819,7 +819,7 @@ musica_idmusica</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>608</StateNumber>
+      <StateNumber>748</StateNumber>
       <DefaultExpression>nextval(&apos;playlist_id_playlist_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>playlist_id_playlist_seq</SequenceName>
@@ -827,55 +827,55 @@ musica_idmusica</ColNames>
     <column id="127" parent="33" name="nome">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
-      <StateNumber>608</StateNumber>
+      <StateNumber>748</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="128" parent="33" name="data_criacao">
       <Position>3</Position>
       <DataType>date|0s</DataType>
-      <StateNumber>608</StateNumber>
+      <StateNumber>748</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="129" parent="33" name="privacidade">
       <Position>4</Position>
       <DataType>boolean|0s</DataType>
-      <StateNumber>608</StateNumber>
+      <StateNumber>748</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <column id="130" parent="33" name="utilizador_cartao_cidadao">
       <Position>5</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>608</StateNumber>
+      <StateNumber>748</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="131" parent="33" name="playlist_pkey">
-      <ObjectId>17036</ObjectId>
+      <ObjectId>17608</ObjectId>
       <ColNames>id_playlist
 utilizador_cartao_cidadao</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="132" parent="33" name="playlist_id_playlist_key">
-      <ObjectId>17038</ObjectId>
+      <ObjectId>17610</ObjectId>
       <ColNames>id_playlist</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="133" parent="33" name="playlist_pkey">
-      <ObjectId>17037</ObjectId>
+      <ObjectId>17609</ObjectId>
       <ColNames>id_playlist
 utilizador_cartao_cidadao</ColNames>
       <UnderlyingIndexName>playlist_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <key id="134" parent="33" name="playlist_id_playlist_key">
-      <ObjectId>17039</ObjectId>
+      <ObjectId>17611</ObjectId>
       <ColNames>id_playlist</ColNames>
       <UnderlyingIndexName>playlist_id_playlist_key</UnderlyingIndexName>
     </key>
     <foreign-key id="135" parent="33" name="playlist_fk1">
-      <ObjectId>17125</ObjectId>
+      <ObjectId>17688</ObjectId>
       <ColNames>utilizador_cartao_cidadao</ColNames>
-      <RefTableId>16987</RefTableId>
+      <RefTableId>17559</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>utilizador</RefTableName>
       <RefKeyName>utilizador_cartao_cidadao_key</RefKeyName>
@@ -885,32 +885,32 @@ utilizador_cartao_cidadao</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>619</StateNumber>
+      <StateNumber>758</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="137" parent="34" name="utilizador_cartao_cidadao">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>619</StateNumber>
+      <StateNumber>758</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="138" parent="34" name="musica_idmusica">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>619</StateNumber>
+      <StateNumber>758</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="139" parent="34" name="playlist_musica_pkey">
-      <ObjectId>17123</ObjectId>
+      <ObjectId>17686</ObjectId>
       <ColNames>playlist_id_playlist
 utilizador_cartao_cidadao
 musica_idmusica</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="140" parent="34" name="playlist_musica_pkey">
-      <ObjectId>17124</ObjectId>
+      <ObjectId>17687</ObjectId>
       <ColNames>playlist_id_playlist
 utilizador_cartao_cidadao
 musica_idmusica</ColNames>
@@ -918,27 +918,27 @@ musica_idmusica</ColNames>
       <Primary>1</Primary>
     </key>
     <foreign-key id="141" parent="34" name="playlist_musica_fk1">
-      <ObjectId>17255</ObjectId>
+      <ObjectId>17793</ObjectId>
       <ColNames>playlist_id_playlist</ColNames>
-      <RefTableId>17032</RefTableId>
+      <RefTableId>17604</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>playlist</RefTableName>
       <RefKeyName>playlist_id_playlist_key</RefKeyName>
       <RefColNames>id_playlist</RefColNames>
     </foreign-key>
     <foreign-key id="142" parent="34" name="playlist_musica_fk2">
-      <ObjectId>17260</ObjectId>
+      <ObjectId>17798</ObjectId>
       <ColNames>utilizador_cartao_cidadao</ColNames>
-      <RefTableId>16987</RefTableId>
+      <RefTableId>17559</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>utilizador</RefTableName>
       <RefKeyName>utilizador_cartao_cidadao_key</RefKeyName>
       <RefColNames>cartao_cidadao</RefColNames>
     </foreign-key>
     <foreign-key id="143" parent="34" name="playlist_musica_fk3">
-      <ObjectId>17265</ObjectId>
+      <ObjectId>17803</ObjectId>
       <ColNames>musica_idmusica</ColNames>
-      <RefTableId>17011</RefTableId>
+      <RefTableId>17583</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>musica</RefTableName>
       <RefKeyName>musica_pkey</RefKeyName>
@@ -948,42 +948,42 @@ musica_idmusica</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>615</StateNumber>
+      <StateNumber>754</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="145" parent="35" name="utilizador_cartao_cidadao">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>615</StateNumber>
+      <StateNumber>754</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="146" parent="35" name="playlist_utilizador_pkey">
-      <ObjectId>17101</ObjectId>
+      <ObjectId>17664</ObjectId>
       <ColNames>playlist_id_playlist
 utilizador_cartao_cidadao</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="147" parent="35" name="playlist_utilizador_pkey">
-      <ObjectId>17102</ObjectId>
+      <ObjectId>17665</ObjectId>
       <ColNames>playlist_id_playlist
 utilizador_cartao_cidadao</ColNames>
       <UnderlyingIndexName>playlist_utilizador_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <foreign-key id="148" parent="35" name="playlist_utilizador_fk1">
-      <ObjectId>17210</ObjectId>
+      <ObjectId>17748</ObjectId>
       <ColNames>playlist_id_playlist</ColNames>
-      <RefTableId>17032</RefTableId>
+      <RefTableId>17604</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>playlist</RefTableName>
       <RefKeyName>playlist_id_playlist_key</RefKeyName>
       <RefColNames>id_playlist</RefColNames>
     </foreign-key>
     <foreign-key id="149" parent="35" name="playlist_utilizador_fk3">
-      <ObjectId>17215</ObjectId>
+      <ObjectId>17753</ObjectId>
       <ColNames>utilizador_cartao_cidadao</ColNames>
-      <RefTableId>16987</RefTableId>
+      <RefTableId>17559</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>utilizador</RefTableName>
       <RefKeyName>utilizador_cartao_cidadao_key</RefKeyName>
@@ -993,7 +993,7 @@ utilizador_cartao_cidadao</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>610</StateNumber>
+      <StateNumber>750</StateNumber>
       <DefaultExpression>nextval(&apos;upload_ficheiro_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>upload_ficheiro_id_seq</SequenceName>
@@ -1001,45 +1001,45 @@ utilizador_cartao_cidadao</ColNames>
     <column id="151" parent="36" name="ficheiro">
       <Position>2</Position>
       <DataType>bytea|0s</DataType>
-      <StateNumber>610</StateNumber>
+      <StateNumber>750</StateNumber>
       <TypeId>17</TypeId>
     </column>
     <column id="152" parent="36" name="utilizador_id">
       <Position>3</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>610</StateNumber>
+      <StateNumber>750</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="153" parent="36" name="musica_id">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
-      <StateNumber>610</StateNumber>
+      <StateNumber>750</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="154" parent="36" name="upload_pkey">
-      <ObjectId>17060</ObjectId>
+      <ObjectId>17632</ObjectId>
       <ColNames>ficheiro_id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="155" parent="36" name="upload_pkey">
-      <ObjectId>17061</ObjectId>
+      <ObjectId>17633</ObjectId>
       <ColNames>ficheiro_id</ColNames>
       <UnderlyingIndexName>upload_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <foreign-key id="156" parent="36" name="upload_fk2">
-      <ObjectId>17155</ObjectId>
+      <ObjectId>17718</ObjectId>
       <ColNames>utilizador_id</ColNames>
-      <RefTableId>16987</RefTableId>
+      <RefTableId>17559</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>utilizador</RefTableName>
       <RefKeyName>utilizador_cartao_cidadao_key</RefKeyName>
       <RefColNames>cartao_cidadao</RefColNames>
     </foreign-key>
     <foreign-key id="157" parent="36" name="upload_fk1">
-      <ObjectId>17150</ObjectId>
+      <ObjectId>17713</ObjectId>
       <ColNames>musica_id</ColNames>
-      <RefTableId>17011</RefTableId>
+      <RefTableId>17583</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>musica</RefTableName>
       <RefKeyName>musica_pkey</RefKeyName>
@@ -1049,42 +1049,42 @@ utilizador_cartao_cidadao</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>616</StateNumber>
+      <StateNumber>755</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="159" parent="37" name="utilizador_cartao_cidadao">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>616</StateNumber>
+      <StateNumber>755</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <index id="160" parent="37" name="upload_utilizador_pkey">
-      <ObjectId>17106</ObjectId>
+      <ObjectId>17669</ObjectId>
       <ColNames>upload_ficheiro_id
 utilizador_cartao_cidadao</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="161" parent="37" name="upload_utilizador_pkey">
-      <ObjectId>17107</ObjectId>
+      <ObjectId>17670</ObjectId>
       <ColNames>upload_ficheiro_id
 utilizador_cartao_cidadao</ColNames>
       <UnderlyingIndexName>upload_utilizador_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <foreign-key id="162" parent="37" name="upload_utilizador_fk1">
-      <ObjectId>17220</ObjectId>
+      <ObjectId>17758</ObjectId>
       <ColNames>upload_ficheiro_id</ColNames>
-      <RefTableId>17053</RefTableId>
+      <RefTableId>17625</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>upload</RefTableName>
       <RefKeyName>upload_pkey</RefKeyName>
       <RefColNames>ficheiro_id</RefColNames>
     </foreign-key>
     <foreign-key id="163" parent="37" name="upload_utilizador_fk2">
-      <ObjectId>17225</ObjectId>
+      <ObjectId>17763</ObjectId>
       <ColNames>utilizador_cartao_cidadao</ColNames>
-      <RefTableId>16987</RefTableId>
+      <RefTableId>17559</RefTableId>
       <RefColPositions>1</RefColPositions>
       <RefTableName>utilizador</RefTableName>
       <RefKeyName>utilizador_cartao_cidadao_key</RefKeyName>
@@ -1094,7 +1094,7 @@ utilizador_cartao_cidadao</ColNames>
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>604</StateNumber>
+      <StateNumber>744</StateNumber>
       <DefaultExpression>nextval(&apos;utilizador_cartao_cidadao_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
       <SequenceName>utilizador_cartao_cidadao_seq</SequenceName>
@@ -1103,51 +1103,51 @@ utilizador_cartao_cidadao</ColNames>
       <Position>2</Position>
       <DataType>varchar(512)|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>604</StateNumber>
+      <StateNumber>744</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="166" parent="38" name="passe">
       <Position>3</Position>
       <DataType>varchar(512)|0s</DataType>
-      <StateNumber>604</StateNumber>
+      <StateNumber>744</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="167" parent="38" name="utilizador_tipo">
       <Position>4</Position>
       <DataType>boolean|0s</DataType>
-      <StateNumber>604</StateNumber>
+      <StateNumber>744</StateNumber>
       <TypeId>16</TypeId>
     </column>
     <index id="168" parent="38" name="utilizador_pkey">
-      <ObjectId>16994</ObjectId>
+      <ObjectId>17566</ObjectId>
       <ColNames>cartao_cidadao
 nome</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="169" parent="38" name="utilizador_cartao_cidadao_key">
-      <ObjectId>16996</ObjectId>
+      <ObjectId>17568</ObjectId>
       <ColNames>cartao_cidadao</ColNames>
       <Unique>1</Unique>
     </index>
     <index id="170" parent="38" name="utilizador_nome_key">
-      <ObjectId>16998</ObjectId>
+      <ObjectId>17570</ObjectId>
       <ColNames>nome</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="171" parent="38" name="utilizador_pkey">
-      <ObjectId>16995</ObjectId>
+      <ObjectId>17567</ObjectId>
       <ColNames>cartao_cidadao
 nome</ColNames>
       <UnderlyingIndexName>utilizador_pkey</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
     <key id="172" parent="38" name="utilizador_cartao_cidadao_key">
-      <ObjectId>16997</ObjectId>
+      <ObjectId>17569</ObjectId>
       <ColNames>cartao_cidadao</ColNames>
       <UnderlyingIndexName>utilizador_cartao_cidadao_key</UnderlyingIndexName>
     </key>
     <key id="173" parent="38" name="utilizador_nome_key">
-      <ObjectId>16999</ObjectId>
+      <ObjectId>17571</ObjectId>
       <ColNames>nome</ColNames>
       <UnderlyingIndexName>utilizador_nome_key</UnderlyingIndexName>
     </key>
